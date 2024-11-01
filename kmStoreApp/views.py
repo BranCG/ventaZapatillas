@@ -22,7 +22,7 @@ def inicio(request):
 # Vista para iniciar sesión
 
 
-def login(request):
+def iniciar_sesion(request):
     if request.method == "POST":
         nombre_usuario = request.POST.get('nombre_usuario')
         contraseña = request.POST.get('contraseña')
