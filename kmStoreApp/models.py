@@ -5,11 +5,10 @@ from django.contrib.auth.models import User
 
 
 class Producto(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    nombre = models.CharField(max_length=40)
+    descripcion = models.TextField(max_length=200)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    imagen = models.ImageField(upload_to='productos/')
     fecha_agregado = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
