@@ -8,7 +8,6 @@ from .models import Producto, OrdenEnvio
 
 
 class FormularioRegistro(UserCreationForm):
-    username = forms.CharField(label="Nombre de Usuario")
     email = forms.EmailField(label="Correo Electrónico")
     password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
     password2 = forms.CharField(
@@ -17,10 +16,10 @@ class FormularioRegistro(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+        labels = {'username' : 'Nombre de Usuario'}
+
 
 # Formulario para Crear/Editar Producto
-
-
 class FormularioProducto(forms.ModelForm):
     nombre = forms.CharField(label="Nombre del Producto")
     descripcion = forms.CharField(label="Descripción", widget=forms.Textarea)

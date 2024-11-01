@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -14,46 +15,52 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">KM Store</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+    <nav class="navbar navbar-custom bg-warning">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">KM Store</a>
+        
+        <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listaProductos' %}">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Quienes Somos</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                        <a class="nav-link" href="{% url 'carrito' %}">
+                            <i class="fas fa-shopping-cart"></i> Carrito
+                        </a>
                     </li>
-                </ul>
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'carrito' %}">
-                                <i class="fas fa-shopping-cart"></i> Carrito
-                            </a>
-                        </li>
-                        {% if user.is_staff %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
-                        </li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Cerrar Sesión</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'registro' %}">Registro</a>
-                        </li>
+                    {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
+                    </li>
                     {% endif %}
-                </ul>
-            </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cerrar Sesión</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-
+    </div>
+</nav>
+    <div class="container mt-3 d-flex justify-content-center align-items-center">
+        <img src="{% static 'images/fondozapa.jpg' %}">
+    </div>
     <!-- Main Content -->
     <div class="container main-content">
         {% if messages %}
@@ -70,9 +77,30 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container text-center">
-            <span>© 2024 KM Store - Todos los derechos reservados</span>
+    <div class="container-fluid bg-dark text-light py-4 mt-3 text-start">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <p> Av colorado 273, Vitacura.  <br>
+                    Santiago de Chile.</p>
+            </div>
+            <div class="col-md-4">
+                <p>© 2024 KM Store - Todos los derechos reservados</p>
+            </div>
+            <div class="col-md-4 mr-4">
+                <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listaProductos' %}">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Quienes Somos</a>
+                </li>
+            </ul>
+            </div>
         </div>
+    </div>
     </footer>
 
     <!-- Bootstrap JS -->

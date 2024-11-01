@@ -33,7 +33,7 @@ def login(request):
             return redirect('inicio')
         else:
             return render(request, 'kmStoreApp/login.html', {'error': 'Credenciales inválidas'})
-    return render(request, 'kmStoreApp/login.html')
+    return render(request, 'login.html')
 
 # Vista para registrar usuarios
 
@@ -46,14 +46,14 @@ def registro(request):
             return redirect('iniciar_sesion')
     else:
         formulario = FormularioRegistro()
-    return render(request, 'kmStoreApp/registro.html', {'formulario': formulario})
+    return render(request, 'registro.html', {'formulario': formulario})
 
 # Vista de detalle de un producto
 
 
 def detalle_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
-    return render(request, 'kmStoreApp/detalle_producto.html', {'producto': producto})
+    return render(request, 'detalle_producto.html', {'producto': producto})
 
 # Vista del carrito de compras
 
@@ -61,7 +61,7 @@ def detalle_producto(request, id):
 @login_required
 def carrito(request):
     items_carrito = Carrito.objects.filter(usuario=request.user)
-    return render(request, 'kmStoreApp/carrito.html', {'items_carrito': items_carrito})
+    return render(request, 'carrito.html', {'items_carrito': items_carrito})
 
 # Formulario para ingresar los datos de despacho
 
@@ -77,7 +77,7 @@ def formulario_despacho(request):
             return redirect('carrito')
     else:
         formulario = FormularioEnvio()
-    return render(request, 'kmStoreApp/formulario_despacho.html', {'formulario': formulario})
+    return render(request, 'formulario_despacho.html', {'formulario': formulario})
 
 # Panel de administración para el CRUD de productos
 
@@ -85,7 +85,7 @@ def formulario_despacho(request):
 @login_required
 def panel_admin(request):
     productos = Producto.objects.all()
-    return render(request, 'kmStoreApp/panelAdmin.html', {'productos': productos})
+    return render(request, 'panelAdmin.html', {'productos': productos})
 
 # Crear un nuevo producto
 
@@ -99,7 +99,7 @@ def crear_producto(request):
             return redirect('panel_administracion')
     else:
         formulario = FormularioProducto()
-    return render(request, 'kmStoreApp/crear_producto.html', {'formulario': formulario})
+    return render(request, 'crear_producto.html', {'formulario': formulario})
 
 # Modificar un producto existente
 
@@ -114,7 +114,7 @@ def actualizar_producto(request, id):
             return redirect('panel_administracion')
     else:
         formulario = FormularioProducto(instance=producto)
-    return render(request, 'kmStoreApp/actualizar_producto.html', {'formulario': formulario})
+    return render(request, '/actualizar_producto.html', {'formulario': formulario})
 
 # Eliminar un producto existente
 
@@ -125,4 +125,9 @@ def eliminar_producto(request, id):
     if request.method == "POST":
         producto.delete()
         return redirect('panel_administracion')
-    return render(request, 'kmStoreApp/eliminar_producto.html', {'producto': producto})
+    return render(request, 'eliminar_producto.html', {'producto': producto})
+
+
+def lista_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'kmStoreApp/listaProductos.html', {'productos': productos})

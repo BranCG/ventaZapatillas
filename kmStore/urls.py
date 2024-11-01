@@ -27,6 +27,7 @@ urlpatterns = [
     path('producto/', views.detalle_producto, name='detalle_producto'),
     path('carrito/', views.carrito, name='carrito'),
     path('formularioDespacho/', views.formulario_despacho, name='formulario_despacho'),
+    path('listaProductos/', views.lista_productos, name='listaProductos'),
     path('panelAdmin/', views.panel_admin, name='panel_admin'),
     path('producto/crear/', views.crear_producto, name='crear_producto'),
     path('producto/modificar/', views.actualizar_producto, name='actualizar_producto'),
