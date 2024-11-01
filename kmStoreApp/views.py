@@ -13,7 +13,7 @@ from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'base.html')
 
 def inicio(request):
     productos = Producto.objects.all()
