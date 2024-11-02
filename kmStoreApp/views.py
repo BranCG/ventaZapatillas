@@ -5,19 +5,48 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Carrito, OrdenEnvio
+from .models import Producto, Carrito, OrdenEnvio, CarritoItem
 # Formularios personalizados
 from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio
 
 # Página de inicio
 
 
+
+def lista_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'listaProductos.html', {'productos': productos})
+
+
+def detalle_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    return render(request, 'detalleProducto.html', {'producto': producto})
+
+
+@login_required
+def agregar_al_carrito(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+    item, created = CarritoItem.objects.get_or_create(
+        carrito=carrito, producto=producto)
+    if not created:
+        item.cantidad += 1
+        item.save()
+    return redirect('ver_carrito')
+
+
+@login_required
+def ver_carrito(request):
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+    items = CarritoItem.objects.filter(carrito=carrito)
+    return render(request, 'carrito.html', {'items': items})
+
 def home(request):
     return render(request, 'base.html')
 
 def inicio(request):
     productos = Producto.objects.all()
-    return render(request, 'kmStoreApp/inicio.html', {'productos': productos})
+    return render(request, 'inicio.html', {'productos': productos})
 
 # Vista para iniciar sesión
 
@@ -32,7 +61,7 @@ def iniciar_sesion(request):
             login(request, usuario)
             return redirect('inicio')
         else:
-            return render(request, 'kmStoreApp/login.html', {'error': 'Credenciales inválidas'})
+            return render(request, 'login.html', {'error': 'Credenciales inválidas'})
     return render(request, 'login.html')
 
 # Vista para registrar usuarios
@@ -55,13 +84,6 @@ def detalle_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
     return render(request, 'detalle_producto.html', {'producto': producto})
 
-# Vista del carrito de compras
-
-
-@login_required
-def carrito(request):
-    items_carrito = Carrito.objects.filter(usuario=request.user)
-    return render(request, 'carrito.html', {'items_carrito': items_carrito})
 
 # Formulario para ingresar los datos de despacho
 
@@ -130,4 +152,4 @@ def eliminar_producto(request, id):
 
 def lista_productos(request):
     productos = Producto.objects.all()
-    return render(request, 'kmStoreApp/listaProductos.html', {'productos': productos})
+    return render(request, 'listaProductos.html', {'productos': productos})

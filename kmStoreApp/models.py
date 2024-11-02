@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 
 
 class Producto(models.Model):
-    nombre = models.CharField(max_length=40)
-    descripcion = models.TextField(max_length=200)
+    nombre = models.CharField(max_length=200)
+    descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.IntegerField()
-    fecha_agregado = models.DateTimeField(auto_now_add=True)
+    stock = models.PositiveIntegerField()
+    imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -17,13 +17,13 @@ class Producto(models.Model):
 
 class Carrito(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    productos = models.ManyToManyField(Producto, through='CarritoItem')
+
+
+class CarritoItem(models.Model):
+    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
-    fecha_agregado = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.usuario} - {self.producto.nombre}"
-
 
 class OrdenEnvio(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

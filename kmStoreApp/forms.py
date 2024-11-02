@@ -6,7 +6,6 @@ from .models import Producto, OrdenEnvio
 
 # Formulario de Registro de Usuario
 
-
 class FormularioRegistro(UserCreationForm):
     email = forms.EmailField(label="Correo Electrónico")
     password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
