@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{ producto.nombre }}</h1>
-<img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
-<p>{{ producto.descripcion }}</p>
-<p>Precio: {{ producto.precio }} CLP</p>
-<p>Stock: {{ producto.stock }}</p>
-<a href="{% url 'agregar_al_carrito' producto.id %}">Agregar al Carrito</a>
+    <h1>{{ producto.nombre }}</h1>
+    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+    <p>{{ producto.descripcion }}</p>
+    <p>Precio: {{ producto.precio }} CLP</p>
+    <p>Stock: {{ producto.stock }}</p>
+    <a href="{% url 'agregar_al_carrito' producto.id %}">Agregar al Carrito</a>
 {% endblock %}

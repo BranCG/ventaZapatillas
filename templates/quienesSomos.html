@@ -1,63 +1,5 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KM Store - {% block title %}{% endblock %}</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    {% load static %}
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-custom bg-warning">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'base' %}">KM Store</a>
-        
-        <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Quienes Somos</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'carrito' %}">
-                            <i class="fas fa-shopping-cart"></i> Carrito
-                        </a>
-                    </li>
-                    {% if user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'iniciar_sesion' %}">Cerrar Sesión</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
+{% extends 'home.html' %}
+{% block content %}
 <div class="container text-center mt-5 mb-5">
     <h1>NOSOTROS</h1>
     <p>Bienvenido a KM Store, la tienda creada para corredores por apasionados del running. Nos dedicamos a ofrecer las mejores zapatillas para quienes disfrutan cada kilómetro, ya sea en asfalto, senderos o pistas, y buscan un rendimiento superior en cada paso.
@@ -68,36 +10,4 @@ Nos enorgullece ser una tienda especializada en running, comprometida con brinda
 
 Gracias por confiar en KM Store como parte de tu camino. Estamos aquí para cada paso de tu viaje como corredor. ¡Explora nuestra tienda y encuentra el impulso que necesitas para superar cada kilómetro!</p>
 </div>
-
-<!-- Footer -->
-    <footer class="footer">
-    <div class="container-fluid bg-dark text-light py-4 mt-3 text-start">
-        <div class="row text-center">
-            <div class="col-md-4">
-                <p> Av colorado 273, Vitacura.  <br>
-                    Santiago de Chile.</p>
-            </div>
-            <div class="col-md-4">
-                <p>© 2024 KM Store - Todos los derechos reservados</p>
-            </div>
-            <div class="col-md-4 mr-4">
-                <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Quienes Somos</a>
-                </li>
-            </ul>
-            </div>
-        </div>
-    </div>
-    </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}

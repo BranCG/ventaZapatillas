@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -58,6 +57,9 @@
     </div>
 </nav>
     <div class="container mt-3 d-flex justify-content-center align-items-center">
+        <button style="width: 200px; font-size: 20px; font-family:monospace; position:relative; left: 400px; border-radius: 20px; background-color: aqua; border-color: white;">
+            <a class="nav-link " href="{% url 'listaProductos' %}">VER PRODUCTOS</a>
+        </button>
         <img src="{% static 'images/fondozapa.jpg' %}">
     </div>
     <!-- Main Content -->

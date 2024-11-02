@@ -184,3 +184,11 @@ body {
     height: 150px;
   }
 }
+
+.hola {
+  width: 200px; 
+  position:relative; 
+  left: 400px; 
+  border-radius: 20px; 
+  background-color: aqua;
+}
