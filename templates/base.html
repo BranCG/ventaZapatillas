@@ -31,27 +31,34 @@
             </ul>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'carrito' %}">
-            <i class="fas fa-shopping-cart"></i> Carrito
-        </a>
-    </li>
-            {% if user.is_staff %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
+                <li class="nav-item mt-2">
+                    <p>Bienvenido, {{ user.username }}.</p>
                 </li>
-            {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
-            </li>
-        {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
-            </li>
-        {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'carrito' %}">
+                        <i class="fas fa-shopping-cart"></i> Carrito
+                        {% if total_items > 0 %}
+                            <span class="badge bg-danger">{{ total_items }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                    
+                {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
+                </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -66,14 +73,11 @@
     <div class="container main-content">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
+                <div class="alert alert-{{ message.tags }}">{% if message.tags == "success" %}{{ message }}{% endif %}</div>
             {% endfor %}
         {% endif %}
         
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
     <!-- Footer -->

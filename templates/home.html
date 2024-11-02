@@ -31,11 +31,9 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'carrito' %}">
-                            <i class="fas fa-shopping-cart"></i> Carrito
-                        </a>
+                {% if user.is_staff %}
+                    <li class="nav-item mt-2">
+                        <p>Hola jefe, {{ user.username }}.</p>
                     </li>
                     {% if user.is_staff %}
                     <li class="nav-item">
@@ -45,6 +43,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
                     </li>
+                {% elif user.is_authenticated %}
+                <li class="nav-item mt-2">
+                    <p>Bienvenido, {{ user.username }}.</p>
+                </li>
+                <a class="nav-link" href="{% url 'carrito' %}">
+                    <i class="fas fa-shopping-cart"></i> Carrito
+                </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
+                </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>

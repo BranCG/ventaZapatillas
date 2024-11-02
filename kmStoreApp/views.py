@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .forms import FormularioProducto
+from django.db.models import Sum
 
 # Página de inicio
 
@@ -30,26 +31,40 @@ def detalle_producto(request, producto_id):
 @login_required
 def agregar_al_carrito(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
-    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
-    item, created = CarritoItem.objects.get_or_create(
+    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+
+    # Verifica si el producto ya está en el carrito
+    carrito_item, created = CarritoItem.objects.get_or_create(
         carrito=carrito, producto=producto)
-    if not created:
-        item.cantidad += 1
-        item.save()
-    return redirect('agregar_al_carrito')
+    carrito_item.cantidad += 1  # Incrementa la cantidad si ya existe
+    carrito_item.save()
+
+    return redirect('carrito')  # Asegúrate de redirigir a la vista del carrito
 
 
 @login_required
 def ver_carrito(request):
-    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
-    items = CarritoItem.objects.filter(carrito=carrito)
-    return render(request, 'carrito.html', {'items': items})
+    carrito = Carrito.objects.filter(usuario=request.user).first()
+    # Obtén los elementos del carrito
+    items = carrito.carritoitem_set.all() if carrito else []
+    total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0  # Total de productos en el carrito
 
+    return render(request, 'carrito.html', {'items': items, 'total_items': total_items})
+
+
+def eliminar_producto_carrito(request, item_id):
+    # Obtén el item de carrito que deseas eliminar
+    item = get_object_or_404(CarritoItem, id=item_id)
+
+    # Elimina el item del carrito
+    item.delete()
+
+    # Redirige al usuario de vuelta al carrito
+    # Asegúrate de que esta vista esté definida en tus urls
+    return redirect('carrito')
 
 
 # Vista de inicio de sesión
-
-
 def iniciar_sesion(request):
     if request.method == 'POST':
         username = request.POST['username']
