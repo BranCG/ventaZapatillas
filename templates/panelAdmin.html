@@ -3,13 +3,10 @@
 <div class="container mt-5">
     <h2>Panel de Administración</h2>
     <p>Bienvenido, {{ user.username }}. Aquí puedes gestionar el contenido del sitio.</p>
-    <!-- Añade las secciones y enlaces necesarios para el panel de administración -->
     <ul>
-        <li><a href="{% url 'listaProductos' %}">Ver productos</a></li>
+        <li><a href="{% url 'listaProductos' %}">Ver productos ACTUALIZAR o ELIMINAR</a></li>
         <li><a href="{% url 'crear_producto' %}">Añadir nuevo producto</a></li>
-        <li><a href="{% url 'actualizar_producto' %}">Actualizar producto</a></li>
     </ul>
-    <h3>Eliminar productos</h3>
     <ul>
         {% for producto in productos %}
             <li>

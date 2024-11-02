@@ -131,19 +131,24 @@ def crear_producto(request):
 
 
 # Modificar un producto existente
-
-
 @login_required
-def actualizar_producto(request, id):
-    producto = get_object_or_404(Producto, id=id)
-    if request.method == "POST":
-        formulario = FormularioProducto(request.POST, instance=producto)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect('panel_administracion')
+@user_passes_test(lambda u: u.is_staff)
+def actualizar_producto(request, producto_id):
+    # Obtiene el producto a actualizar
+    producto = get_object_or_404(Producto, id=producto_id)
+    if request.method == 'POST':
+        # Pasa la instancia del producto
+        form = FormularioProducto(
+            request.POST, request.FILES, instance=producto)
+        if form.is_valid():
+            form.save()  # Guarda los cambios
+            # Redirige a la lista de productos
+            return redirect('listaProductos')
     else:
-        formulario = FormularioProducto(instance=producto)
-    return render(request, '/actualizar_producto.html', {'formulario': formulario})
+        # Crea el formulario con la instancia existente
+        form = FormularioProducto(instance=producto)
+
+    return render(request, 'actualizar_producto.html', {'form': form, 'producto': producto})
 
 # Eliminar un producto existente
 

@@ -11,7 +11,6 @@ class FormularioRegistro(UserCreationForm):
     password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
     password2 = forms.CharField(
         label="Confirmar Contraseña", widget=forms.PasswordInput)
-
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
@@ -33,8 +32,6 @@ class FormularioProducto(forms.ModelForm):
         fields = ['nombre', 'descripcion', 'precio', 'stock','imagen']  # Asegúrate de incluir 'imagen'
 
 # Formulario para los Datos de Envío
-
-
 class FormularioEnvio(forms.ModelForm):
     direccion = forms.CharField(label="Dirección")
     ciudad = forms.CharField(label="Ciudad")
