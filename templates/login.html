@@ -1,16 +1,16 @@
 {% extends 'home.html' %}
 {% block content %}
     <div class="container bg-primary" style="align-items: center; border-radius: 20px; color: white;">
-        <h2 class="mt-5" style="text-align: center; padding: 20px;">Iniciar Sesion</h2>
+        <h2 class="mt-5" style="text-align: center; padding: 20px;">Iniciar Sesión</h2>
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="usuario">Nombre de Usuario:</label>
-                <input type="text" name="usuario" class="form-control" required>
+                <label for="username">Nombre de Usuario:</label>
+                <input type="text" name="username" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña:</label>
-                <input type="password" name="contraseña" id="password" class="form-control" required>
+                <input type="password" name="password" id="password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-warning p-2 mt-4 mb-4">Iniciar Sesión</button>
         </form>

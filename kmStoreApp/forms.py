@@ -25,10 +25,12 @@ class FormularioProducto(forms.ModelForm):
     precio = forms.DecimalField(
         label="Precio", max_digits=10, decimal_places=2)
     stock = forms.IntegerField(label="Stock")
+    imagen = forms.ImageField(
+        label="Imagen", required=False)  # Campo de imagen
 
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'stock']
+        fields = ['nombre', 'descripcion', 'precio', 'stock','imagen']  # Asegúrate de incluir 'imagen'
 
 # Formulario para los Datos de Envío
 

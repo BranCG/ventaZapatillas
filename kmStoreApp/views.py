@@ -9,6 +9,11 @@ from django.contrib.auth.decorators import login_required
 from .models import Producto, Carrito, OrdenEnvio, CarritoItem
 # Formularios personalizados
 from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
+from .forms import FormularioProducto
 
 # Página de inicio
 
@@ -42,24 +47,24 @@ def ver_carrito(request):
 
 
 
-def inicio(request):
-    productos = Producto.objects.all()
-    return render(request, 'inicio.html', {'productos': productos})
-
-# Vista para iniciar sesión
+# Vista de inicio de sesión
 
 
 def iniciar_sesion(request):
-    if request.method == "POST":
-        nombre_usuario = request.POST.get('nombre_usuario')
-        contraseña = request.POST.get('contraseña')
-        usuario = authenticate(
-            request, username=nombre_usuario, password=contraseña)
-        if usuario is not None:
-            login(request, usuario)
-            return redirect('inicio')
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            # Redirigir a la página del panel de administración si el usuario es staff
+            if user.is_staff:
+                return redirect('panel_admin')
+            else:
+                return redirect('base')
         else:
-            return render(request, 'login.html', {'error': 'Credenciales inválidas'})
+            messages.error(
+                request, 'Nombre de usuario o contraseña incorrectos.')
     return render(request, 'login.html')
 
 # Vista para registrar usuarios
@@ -99,27 +104,31 @@ def formulario_despacho(request):
         formulario = FormularioEnvio()
     return render(request, 'formulario_despacho.html', {'formulario': formulario})
 
-# Panel de administración para el CRUD de productos
 
-
+# Vista del Panel Admin
 @login_required
+# Restringe el acceso a usuarios que son staff
+@user_passes_test(lambda u: u.is_staff)
 def panel_admin(request):
-    productos = Producto.objects.all()
-    return render(request, 'panelAdmin.html', {'productos': productos})
+    # Lógica del panel de administración
+    return render(request, 'panelAdmin.html')
 
 # Crear un nuevo producto
 
 
 @login_required
 def crear_producto(request):
-    if request.method == "POST":
-        formulario = FormularioProducto(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect('panel_administracion')
+    if request.method == 'POST':
+        print(request.FILES)  # Agrega esta línea para depuración
+        form = FormularioProducto(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('listaProductos')
     else:
-        formulario = FormularioProducto()
-    return render(request, 'crear_producto.html', {'formulario': formulario})
+        form = FormularioProducto()
+
+    return render(request, 'crear_producto.html', {'form': form})
+
 
 # Modificar un producto existente
 
@@ -140,12 +149,15 @@ def actualizar_producto(request, id):
 
 
 @login_required
-def eliminar_producto(request, id):
-    producto = get_object_or_404(Producto, id=id)
+@user_passes_test(lambda u: u.is_staff)
+def eliminar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+
     if request.method == "POST":
         producto.delete()
-        return redirect('panel_administracion')
-    return render(request, 'eliminar_producto.html', {'producto': producto})
+        return redirect('listaProductos')  # Redirigir a la lista de productos
+
+    return render(request, 'confirmar_eliminacion.html', {'producto': producto})
 
 
 def lista_productos(request):
@@ -155,8 +167,12 @@ def lista_productos(request):
 
 def quienes_somos(request):
     return render(request, 'quienesSomos.html')
+# Vista para cerrar sesión
+
+
 def cerrar_sesion(request):
-    return render(request, 'cerrarSesion.html')
+    logout(request)
+    return redirect('base')
 def base(request):
     return render(request, 'base.html')
 

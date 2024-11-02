@@ -32,12 +32,11 @@ urlpatterns = [
     path('panelAdmin/', views.panel_admin, name='panel_admin'),
     path('producto/crear/', views.crear_producto, name='crear_producto'),
     path('producto/modificar/', views.actualizar_producto, name='actualizar_producto'),
-    path('producto/eliminar/', views.eliminar_producto, name='eliminar_producto'),
+    path('producto/eliminar/<int:producto_id>/',views.eliminar_producto, name='eliminar_producto'),
     path('carrito/agregar/<int:producto_id>/',views.agregar_al_carrito, name='agregar_al_carrito'),
-    path('quienesSomos/',views.quienes_somos, name='quienesSomos'),
-    path('cerrandoSesion/',views.cerrar_sesion, name='cerrarSesion'),
+    path('quienesSomos/', views.quienes_somos, name='quienesSomos'),
+    path('cerrandoSesion/', views.cerrar_sesion, name='cerrarSesion'),
 ]
 
-# Esto añade la URL para servir archivos de medios
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
