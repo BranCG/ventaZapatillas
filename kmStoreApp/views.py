@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Producto, Carrito, OrdenEnvio, CarritoItem
 # Formularios personalizados
-from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio
+from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -70,15 +70,18 @@ def iniciar_sesion(request):
 # Vista para registrar usuarios
 
 
-def registro(request):
-    if request.method == "POST":
-        formulario = FormularioRegistro(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect('iniciar_sesion')
+def registrar_usuario(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            # Iniciar sesión automáticamente después del registro
+            login(request, usuario)
+            # Cambia 'home' a la vista a la que quieras redirigir
+            return redirect('home')
     else:
-        formulario = FormularioRegistro()
-    return render(request, 'registro.html', {'formulario': formulario})
+        form = RegistroUsuarioForm()
+    return render(request, 'registro.html', {'form': form})
 
 # Vista de detalle de un producto
 

@@ -6,15 +6,14 @@ from .models import Producto, OrdenEnvio
 
 # Formulario de Registro de Usuario
 
-class FormularioRegistro(UserCreationForm):
-    email = forms.EmailField(label="Correo Electrónico")
-    password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label="Confirmar Contraseña", widget=forms.PasswordInput)
+
+class RegistroUsuarioForm(UserCreationForm):
+    email = forms.EmailField(
+        required=True, help_text='Requerido. Ingresa una dirección de correo electrónico válida.')
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
-        labels = {'username' : 'Nombre de Usuario'}
+        fields = ('username', 'email', 'password1', 'password2')
 
 
 # Formulario para Crear/Editar Producto
