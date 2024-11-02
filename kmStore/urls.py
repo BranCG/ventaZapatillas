@@ -6,22 +6,23 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    2. Add a URL to urlpatterns:  path('', views.base, name='base')
 Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    1. Add an import:  from other_app.views import base
+    2. Add a URL to urlpatterns:  path('', base.as_view(), name='base')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.conf.urls.static import static
 from kmStoreApp import views
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
+    path('', views.base, name='base'),
     path('login/', views.iniciar_sesion, name='iniciar_sesion'),
     path('registro/', views.registro, name='registro'),
     path('producto/', views.detalle_producto, name='detalle_producto'),
@@ -33,4 +34,10 @@ urlpatterns = [
     path('producto/modificar/', views.actualizar_producto, name='actualizar_producto'),
     path('producto/eliminar/', views.eliminar_producto, name='eliminar_producto'),
     path('carrito/agregar/<int:producto_id>/',views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('quienesSomos/',views.quienes_somos, name='quienesSomos'),
+    path('cerrandoSesion/',views.cerrar_sesion, name='cerrarSesion'),
 ]
+
+# Esto añade la URL para servir archivos de medios
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

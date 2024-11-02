@@ -17,18 +17,17 @@
     <!-- Navbar -->
     <nav class="navbar navbar-custom bg-warning">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">KM Store</a>
-        
+        <a class="navbar-brand" href="{% url 'base' %}">KM Store</a>
         <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                    <a class="nav-link" href="{% url 'base' %}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Productos</a>
+                    <a class="nav-link" href="{% url 'listaProductos' %}">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Quienes Somos</a>
+                    <a class="nav-link" href="{% url 'quienesSomos' %}">Quienes Somos</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -44,7 +43,7 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cerrar Sesión</a>
+                        <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -77,7 +76,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-    <div class="container-fluid bg-dark text-light py-4 mt-3 text-start">
+    <div class="container-fluid bg-warning text-dark py-4 mt-3 text-start">
         <div class="row text-center">
             <div class="col-md-4">
                 <p> Av colorado 273, Vitacura.  <br>
@@ -89,13 +88,13 @@
             <div class="col-md-4 mr-4">
                 <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                    <a class="nav-link" href="{% url 'base' %}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Productos</a>
+                    <a class="nav-link" href="{% url 'listaProductos' %}">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Quienes Somos</a>
+                    <a class="nav-link" href="{% url 'quienesSomos' %}">Quienes Somos</a>
                 </li>
             </ul>
             </div>

@@ -1,3 +1,4 @@
+from .models import Producto
 from django.shortcuts import render
 
 # Create your views here.
@@ -10,8 +11,6 @@ from .models import Producto, Carrito, OrdenEnvio, CarritoItem
 from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio
 
 # Página de inicio
-
-
 
 def lista_productos(request):
     productos = Producto.objects.all()
@@ -41,8 +40,7 @@ def ver_carrito(request):
     items = CarritoItem.objects.filter(carrito=carrito)
     return render(request, 'carrito.html', {'items': items})
 
-def home(request):
-    return render(request, 'base.html')
+
 
 def inicio(request):
     productos = Producto.objects.all()
@@ -153,3 +151,12 @@ def eliminar_producto(request, id):
 def lista_productos(request):
     productos = Producto.objects.all()
     return render(request, 'listaProductos.html', {'productos': productos})
+
+
+def quienes_somos(request):
+    return render(request, 'quienesSomos.html')
+def cerrar_sesion(request):
+    return render(request, 'cerrarSesion.html')
+def base(request):
+    return render(request, 'base.html')
+

@@ -14,7 +14,8 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
 <body>
- <nav class="navbar navbar-custom bg-warning">
+    <!-- Navbar -->
+    <nav class="navbar navbar-custom bg-warning">
     <div class="container">
         <a class="navbar-brand" href="{% url 'base' %}">KM Store</a>
         
@@ -31,37 +32,46 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'carrito' %}">
+                            <i class="fas fa-shopping-cart"></i> Carrito
+                        </a>
+                    </li>
+                    {% if user.is_staff %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
                     </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'iniciar_sesion' %}">Cerrar Sesión</a>
+                    </li>
+                {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
                     </li>
-
+                {% endif %}
             </ul>
         </div>
     </div>
 </nav>
-    <div class="container bg-primary" style="align-items: center; border-radius: 20px; color: white;">
-        <h2 class="mt-5" style="text-align: center; padding: 20px;">Iniciar Sesion</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="usuario">Nombre de Usuario:</label>
-                <input type="text" name="usuario" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" name="contraseña" id="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-warning p-2 mt-4 mb-4">Iniciar Sesión</button>
-        </form>
-    </div>
+<div class="container text-center mt-5 mb-5">
+    <h1>NOSOTROS</h1>
+    <p>Bienvenido a KM Store, la tienda creada para corredores por apasionados del running. Nos dedicamos a ofrecer las mejores zapatillas para quienes disfrutan cada kilómetro, ya sea en asfalto, senderos o pistas, y buscan un rendimiento superior en cada paso.
+
+En KM Store, entendemos que el calzado adecuado es esencial para maximizar el rendimiento y cuidar la salud de tus pies. Trabajamos con las marcas líderes en el mundo del running, seleccionando modelos que combinan la última tecnología, comodidad y durabilidad para acompañarte en cada reto y ayudarte a alcanzar tus metas.
+
+Nos enorgullece ser una tienda especializada en running, comprometida con brindar un servicio personalizado y asesorarte para encontrar las zapatillas ideales, ya sea para entrenamientos diarios, competiciones o aventuras en terrenos variados.
+
+Gracias por confiar en KM Store como parte de tu camino. Estamos aquí para cada paso de tu viaje como corredor. ¡Explora nuestra tienda y encuentra el impulso que necesitas para superar cada kilómetro!</p>
+</div>
+
+<!-- Footer -->
     <footer class="footer">
-    <div class="container-fluid bg-dark text-light py-4 mt-5 text-start">
+    <div class="container-fluid bg-dark text-light py-4 mt-3 text-start">
         <div class="row text-center">
             <div class="col-md-4">
                 <p> Av colorado 273, Vitacura.  <br>
@@ -86,5 +96,8 @@
         </div>
     </div>
     </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
