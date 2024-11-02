@@ -36,7 +36,7 @@ def agregar_al_carrito(request, producto_id):
     if not created:
         item.cantidad += 1
         item.save()
-    return redirect('ver_carrito')
+    return redirect('agregar_al_carrito')
 
 
 @login_required
@@ -78,7 +78,7 @@ def registrar_usuario(request):
             # Iniciar sesión automáticamente después del registro
             login(request, usuario)
             # Cambia 'home' a la vista a la que quieras redirigir
-            return redirect('home')
+            return redirect('base')
     else:
         form = RegistroUsuarioForm()
     return render(request, 'registro.html', {'form': form})
@@ -177,10 +177,10 @@ def quienes_somos(request):
     return render(request, 'quienesSomos.html')
 # Vista para cerrar sesión
 
-
 def cerrar_sesion(request):
     logout(request)
     return redirect('base')
+
 def base(request):
     return render(request, 'base.html')
 
