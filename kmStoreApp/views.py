@@ -1,32 +1,20 @@
-from django.db.models import F, Sum
-from .models import Producto
-from django.shortcuts import render
-
 # Create your views here.
 # views.py
+from django.db.models import F, Sum
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from .models import Producto, Carrito, OrdenEnvio, CarritoItem
-# Formularios personalizados
-from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .forms import FormularioProducto
-from django.db.models import Sum
+from .models import Producto, Carrito, CarritoItem
+from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
+
 
 # Página de inicio
 
 def lista_productos(request):
     productos = Producto.objects.all()
-    return render(request, 'listaProductos.html', {'productos': productos})
+    return render(request, 'lista_productos.html', {'productos': productos})
 
-
-def detalle_producto(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    return render(request, 'detalleProducto.html', {'producto': producto})
 
 
 @login_required
@@ -152,7 +140,7 @@ def formulario_despacho(request):
 @user_passes_test(lambda u: u.is_staff)
 def panel_admin(request):
     # Lógica del panel de administración
-    return render(request, 'panelAdmin.html')
+    return render(request, 'panel_admin.html')
 
 # Crear un nuevo producto
 
@@ -164,7 +152,7 @@ def crear_producto(request):
         form = FormularioProducto(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('listaProductos')
+            return redirect('lista_productos')
     else:
         form = FormularioProducto()
 
@@ -184,7 +172,7 @@ def actualizar_producto(request, producto_id):
         if form.is_valid():
             form.save()  # Guarda los cambios
             # Redirige a la lista de productos
-            return redirect('listaProductos')
+            return redirect('lista_productos')
     else:
         # Crea el formulario con la instancia existente
         form = FormularioProducto(instance=producto)
@@ -201,18 +189,18 @@ def eliminar_producto(request, producto_id):
 
     if request.method == "POST":
         producto.delete()
-        return redirect('listaProductos')  # Redirigir a la lista de productos
+        return redirect('lista_productos')  # Redirigir a la lista de productos
 
     return render(request, 'confirmar_eliminacion.html', {'producto': producto})
 
 
 def lista_productos(request):
     productos = Producto.objects.all()
-    return render(request, 'listaProductos.html', {'productos': productos})
+    return render(request, 'lista_productos.html', {'productos': productos})
 
 
 def quienes_somos(request):
-    return render(request, 'quienesSomos.html')
+    return render(request, 'quienes_somos.html')
 # Vista para cerrar sesión
 
 def cerrar_sesion(request):
