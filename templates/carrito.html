@@ -20,7 +20,7 @@
                         <td>{{ item.producto.nombre }}</td>
                         <td>{{ item.cantidad }}</td>
                         <td>${{ item.producto.precio }}</td>
-                        <td>${{ item.total_item }}</td>
+                        <td>${{ item.total_item }}</td> <!-- Muestra el total calculado para cada item -->
                         <td>
                             <form action="{% url 'eliminar_producto_carrito' item.id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
@@ -29,10 +29,15 @@
                         </td>
                     </tr>
                 {% endfor %}
+                </table>
             </tbody>
-        </table>
-        <h3>Total de Productos: {{ total_items }}</h3>
-
+            <div class="container text-start">
+            <h3>Total de Productos: {{ total_items }}</h3>
+            <h3>Total del Carrito: ${{ total_carrito }}</h3> <!-- Muestra el total del carrito calculado -->
+            </div>    
+            <div class="container text-center">
+                <a href="{% url 'formulario_despacho' %}" class="btn btn-primary ">Generar pedido</a>
+            </div>
     {% else %}
         <p>Tu carrito está vacío.</p>
         <a href="{% url 'listaProductos' %}" class="btn btn-primary">Agregar Productos</a>

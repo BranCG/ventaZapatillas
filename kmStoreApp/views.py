@@ -1,3 +1,4 @@
+from django.db.models import F, Sum
 from .models import Producto
 from django.shortcuts import render
 
@@ -33,34 +34,55 @@ def agregar_al_carrito(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     carrito, created = Carrito.objects.get_or_create(usuario=request.user)
 
-    # Verifica si el producto ya está en el carrito
-    carrito_item, created = CarritoItem.objects.get_or_create(
+    # Verifica si el producto ya existe en el carrito
+    item, item_created = CarritoItem.objects.get_or_create(
         carrito=carrito, producto=producto)
-    carrito_item.cantidad += 1  # Incrementa la cantidad si ya existe
-    carrito_item.save()
 
-    return redirect('carrito')  # Asegúrate de redirigir a la vista del carrito
+    # Solo incrementa la cantidad si el item ya existía
+    if not item_created:
+        item.cantidad += 1
+    else:
+        item.cantidad = 1
+
+    item.save()
+
+    return redirect('carrito')
 
 
 @login_required
 def ver_carrito(request):
     carrito = Carrito.objects.filter(usuario=request.user).first()
-    # Obtén los elementos del carrito
     items = carrito.carritoitem_set.all() if carrito else []
-    total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0  # Total de productos en el carrito
 
-    return render(request, 'carrito.html', {'items': items, 'total_items': total_items})
+    # Calcula el total de todos los items en el carrito
+    total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0
+
+    # Calcula el total para cada item y el total general del carrito
+    for item in items:
+        # Agrega el total de cada item al objeto
+        item.total_item = item.cantidad * item.producto.precio
+
+    # Suma de todos los items para el total del carrito
+    total_carrito = sum(item.total_item for item in items)
+
+    return render(request, 'carrito.html', {
+        'items': items,
+        'total_items': total_items,
+        'total_carrito': total_carrito
+    })
 
 
+@login_required
 def eliminar_producto_carrito(request, item_id):
-    # Obtén el item de carrito que deseas eliminar
     item = get_object_or_404(CarritoItem, id=item_id)
 
-    # Elimina el item del carrito
-    item.delete()
+    # Reduce la cantidad o elimina el item si la cantidad llega a 0
+    if item.cantidad > 1:
+        item.cantidad -= 1
+        item.save()
+    else:
+        item.delete()
 
-    # Redirige al usuario de vuelta al carrito
-    # Asegúrate de que esta vista esté definida en tus urls
     return redirect('carrito')
 
 
@@ -113,6 +135,7 @@ def detalle_producto(request, id):
 def formulario_despacho(request):
     if request.method == "POST":
         formulario = FormularioEnvio(request.POST)
+        messages.success(request, "¡Gracias por comprar con nosotros! Pronto recibirás un correo con la forma de pago y despacho oficial.")
         if formulario.is_valid():
             orden = formulario.save(commit=False)
             orden.usuario = request.user
