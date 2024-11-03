@@ -1,12 +1,22 @@
+from django.db.models import F, Sum
+from .models import Producto
+from django.shortcuts import render
+
 # Create your views here.
 # views.py
-from django.db.models import F, Sum
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from .models import Producto, Carrito, OrdenEnvio, CarritoItem
+# Formularios personalizados
+from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .models import Producto, Carrito, CarritoItem
-from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
+from .forms import FormularioProducto
+from django.db.models import Sum
+# views.py
 
 
 # Página de inicio
@@ -14,7 +24,6 @@ from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
 def lista_productos(request):
     productos = Producto.objects.all()
     return render(request, 'lista_productos.html', {'productos': productos})
-
 
 
 @login_required
@@ -102,7 +111,6 @@ def registrar_usuario(request):
             usuario = form.save()
             # Iniciar sesión automáticamente después del registro
             login(request, usuario)
-            # Cambia 'home' a la vista a la que quieras redirigir
             return redirect('base')
     else:
         form = RegistroUsuarioForm()
@@ -117,13 +125,12 @@ def detalle_producto(request, id):
 
 
 # Formulario para ingresar los datos de despacho
-
-
 @login_required
 def formulario_despacho(request):
     if request.method == "POST":
         formulario = FormularioEnvio(request.POST)
-        messages.success(request, "¡Gracias por comprar con nosotros! Pronto recibirás un correo con la forma de pago y despacho oficial.")
+        messages.success(
+            request, "¡Gracias por comprar con nosotros! Pronto recibirás un correo con la forma de pago y despacho oficial.")
         if formulario.is_valid():
             orden = formulario.save(commit=False)
             orden.usuario = request.user
@@ -203,10 +210,11 @@ def quienes_somos(request):
     return render(request, 'quienes_somos.html')
 # Vista para cerrar sesión
 
+
 def cerrar_sesion(request):
     logout(request)
     return redirect('base')
 
+
 def base(request):
     return render(request, 'base.html')
-
