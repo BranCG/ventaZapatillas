@@ -130,7 +130,7 @@ def formulario_despacho(request):
     if request.method == "POST":
         formulario = FormularioEnvio(request.POST)
         messages.success(
-            request, "¡Gracias por comprar con nosotros! Pronto recibirás un correo con la forma de pago y despacho oficial.")
+            request, "¡GRACIAS POR PREFERIRNOS! Pronto recibirás un correo para elegir tu talla y forma de pago.")
         if formulario.is_valid():
             orden = formulario.save(commit=False)
             orden.usuario = request.user

@@ -13,50 +13,56 @@
     <nav class="navbar navbar-custom bg-warning">
     <div class="container">
         <a class="navbar-brand" href="{% url 'base' %}">KM Store</a>
-        <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lista_productos' %}">Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'quienes_somos' %}">Quienes Somos</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                <li class="nav-item mt-2">
-                    <p>Bienvenido, {{ user.username }}.</p>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'carrito' %}">
-                        <i class="fas fa-shopping-cart"></i> Carrito
-                        {% if total_items > 0 %}
-                            <span class="badge bg-danger">{{ total_items }}</span>
-                        {% endif %}
-                    </a>
-                </li>
-                    
-                {% if user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
-                </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+    <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
+    <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'base' %}">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'lista_productos' %}">Productos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'quienes_somos' %}">Quienes Somos</a>
+        </li>
+    </ul>
+    
+    <ul class="navbar-nav">
+        {% if user.is_authenticated and user.is_staff %}
+            <li class="nav-item mt-2">
+                <p>¡Hola {{ user.username }}, eres administrador!</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
+            </li>
+        
+        {% elif user.is_authenticated %}
+            <li class="nav-item mt-2">
+                <p>Bienvenido, {{ user.username }}.</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'carrito' %}">
+                    <i class="fas fa-shopping-cart"></i> Carrito
+                    {% if total_items > 0 %}
+                        <span class="badge bg-danger">{{ total_items }}</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
+            </li>
+        
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+            </li>
+        {% endif %}
+        </ul>
     </div>
 </nav>
     <div class="container mt-3 d-flex justify-content-center align-items-center">
