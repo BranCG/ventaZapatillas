@@ -1,39 +1,32 @@
 {% extends 'home.html' %}
+
 {% block content %}
 <div class="container mt-5 bg-primary text-white" style="border-radius: 20px;">
-    <h2 class="mt-5" style="text-align: center; padding: 20px;">Actualizar Producto: {{ producto.nombre }}</h2>
+    <h2 class="mt-5 text-center py-4">Actualizar Producto: {{ producto.nombre }}</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-                <label for="nombre">Nombre del Producto:</label>
-                <input type="text" name="nombre" id="nombre" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="descripcion">Descripción:</label>
-                <textarea name="descripcion" id="descripcion" class="form-control" rows="3" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="precio">Precio:</label>
-                <input type="number" name="precio" id="precio" class="form-control" min="1" required>
-            </div>
-
-            <div class="form-group">
-                <label for="stock">Cantidad en Stock:</label>
-                <input type="number" name="stock" id="stock" class="form-control" min="1" required>
-            </div>
-
-            <div class="form-group mt-4 bg-success">
+            <label for="nombre">Nombre del Producto:</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion" class="form-control" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="precio">Precio:</label>
+            <input type="number" name="precio" id="precio" class="form-control" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="stock">Cantidad en Stock:</label>
+            <input type="number" name="stock" id="stock" class="form-control" min="1" required>
+        </div>
+        <div class="form-group mt-4 bg-success p-2">
             <label for="imagen">Imagen del Producto (JPG):</label>
             <input type="file" name="imagen" id="imagen" class="form-control-file">
         </div>
-
-            <button type="submit" class="btn btn-warning mt-4 mb-4">Actualizar Producto</button>
+        <button type="submit" class="btn btn-warning mt-4 mb-4">Actualizar Producto</button>
     </form>
-    <button class="btn btn-warning mb-3 bg-danger"><a style="color: white;" href="{% url 'lista_productos' %}">Cancelar</a></button>
-    
+    <a href="{% url 'lista_productos' %}" class="btn btn-danger mb-3">Cancelar</a>
 </div>
 {% endblock %}
-
-
-

@@ -4,23 +4,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Producto, Carrito, CarritoItem
-from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio, FormularioActualizacionCuenta, FormularioRegistro
+from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio, FormularioActualizacionCuenta
 
 
-# Create your views here.
-# Vista para iniciar sesionn
+# Vista para iniciar sesión
 def iniciar_sesion(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user is not None:  # Si existe lo redirecciono al ser admin a panel_admin, sino base.html de cliente autenticado.
+        if user is not None:
             login(request, user)
             return redirect('panel_admin') if user.is_staff else redirect('base')
-        elif user is None:   # me aseguro que si no existe muestro este mensaje.
-            messages.error(request, 'Cuenta de usuario no existe')
-        else:
-            messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
+        messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
     return render(request, 'login.html')
 
 
@@ -30,7 +26,6 @@ def registrar_usuario(request):
         form = FormularioRegistro(request.POST)
         if form.is_valid():
             usuario = form.save()
-            #Inicia sesión automáticamente después del registro
             login(request, usuario)
             return redirect('base')
     else:
@@ -38,12 +33,13 @@ def registrar_usuario(request):
     return render(request, 'registro.html', {'form': form})
 
 
-#Cierra la sesión del usuario
+# Cierra la sesión del usuario
 def cerrar_sesion(request):
     logout(request)
     return redirect('base')
 
-# Mmuestra la sección "Quiénes Somos"
+
+# Muestra la sección "Quiénes Somos"
 def quienes_somos(request):
     return render(request, 'quienes_somos.html')
 
@@ -52,7 +48,6 @@ def quienes_somos(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def panel_admin(request):
-    # Lógica del panel de administración
     return render(request, 'panel_admin.html')
 
 
@@ -82,10 +77,9 @@ def crear_producto(request):
 def actualizar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == 'POST':
-        form = FormularioProducto(
-            request.POST, request.FILES, instance=producto)
+        form = FormularioProducto(request.POST, request.FILES, instance=producto)
         if form.is_valid():
-            form.save()  #Guardo los cambios
+            form.save()
             messages.success(request, '¡Producto actualizado con éxito!')
             return redirect('lista_productos')
     else:
@@ -110,23 +104,19 @@ def eliminar_producto(request, producto_id):
 def agregar_al_carrito(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
-    item, item_creado = CarritoItem.objects.get_or_create(
-        carrito=carrito, producto=producto)
+    item, item_creado = CarritoItem.objects.get_or_create(carrito=carrito, producto=producto)
     item.cantidad = item.cantidad + 1 if not item_creado else 1
     item.save()
     return redirect('carrito')
 
 
-#Muestra el carrito del usuario con detalles de los artículos y totales
+# Muestra el carrito del usuario con detalles de los artículos y totales
 @login_required
 def ver_carrito(request):
     carrito = Carrito.objects.filter(usuario=request.user).first()
     items = carrito.carritoitem_set.all() if carrito else []
-    # Comprueba si items es un queryset antes de intentar agregar
-    if items:
-        total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0
-    else:
-        total_items = 0  # Valor predeterminado si no hay artículos
+    
+    total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0
     for item in items:
         item.total_item = item.cantidad * item.producto.precio
     total_carrito = sum(item.total_item for item in items)
@@ -177,12 +167,12 @@ def base(request):
     return render(request, 'base.html')
 
 
-#Vista para modificar datos del usuario
+# Vista para modificar datos del usuario
 @login_required
 def modificar_cuenta(request):
     if request.method == 'POST':
         user_form = FormularioActualizacionCuenta(request.POST, instance=request.user)
-        if 'update_data' in request.POST and user_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
             messages.success(request, '¡Tus datos han sido actualizados con éxito!.')
             return redirect('base')
@@ -192,13 +182,12 @@ def modificar_cuenta(request):
         user_form = FormularioActualizacionCuenta(instance=request.user)
     return render(request, 'modificar_cuenta.html', {'user_form': user_form})
 
-# Vista para eliminar cuenta usuario
+
+# Vista para eliminar cuenta de usuario
 @login_required
 def eliminar_cuenta(request):
     if request.method == "POST":
-        # Elimina el usuario actual
         request.user.delete()
         messages.success(request, "Tu cuenta ha sido eliminada exitosamente.")
-        return redirect('base')  # Asegúrate de que 'base' sea una URL válida en tu proyecto.
-    # Si no es POST, redirige a la página de modificación de cuenta
+        return redirect('base')
     return redirect('modificar_cuenta')

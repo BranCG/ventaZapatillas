@@ -1,11 +1,12 @@
 {% extends "home.html" %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Panel de Administración</h2>
+<div class="container mt-5 bg-primary text-white p-4" style="border-radius: 20px;">
+    <h2 class="bg-warning text-dark">Panel de Administración</h2>
     <p>Bienvenido, {{ user.username }}. Aquí puedes gestionar el contenido del sitio.</p>
+    <p>Elije una de estas opciones:</p>
     <ul>
-        <li><a href="{% url 'lista_productos' %}">Ver productos ACTUALIZAR o ELIMINAR</a></li>
-        <li><a href="{% url 'crear_producto' %}">Añadir nuevo producto</a></li>
+        <li><a style="color: white;" href="{% url 'lista_productos' %}">Ver productos ACTUALIZAR o ELIMINAR</a></li>
+        <li><a style="color: white;" href="{% url 'crear_producto' %}">Añadir nuevo producto</a></li>
     </ul>
     <ul>
         {% for producto in productos %}

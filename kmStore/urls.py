@@ -41,7 +41,9 @@ urlpatterns = [
     path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
 # Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
 # verificando si DEBUG está activado y usando MEDIA_URL y MEDIA_ROOT para definir su acceso.
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
