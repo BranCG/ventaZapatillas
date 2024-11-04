@@ -36,9 +36,9 @@ urlpatterns = [
     path('producto/eliminar/<int:producto_id>/',views.eliminar_producto, name='eliminar_producto'),
     path('producto/actualizar/<int:producto_id>/',views.actualizar_producto, name='actualizar_producto'),
     path('quienes_somos/', views.quienes_somos, name='quienes_somos'),
-    path('cerrandoSesion/', views.cerrar_sesion, name='cerrarSesion'),
-    path('mi-cuenta/', views.modificar_cuenta, name='modificar_cuenta'),
-    path('eliminar-cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
+    path('cerrar_sesion/', views.cerrar_sesion, name='cerrar_sesion'),
+    path('mi_cuenta/', views.modificar_cuenta, name='modificar_cuenta'),
+    path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
 ]
 
 if settings.DEBUG:

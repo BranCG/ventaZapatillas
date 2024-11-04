@@ -43,7 +43,6 @@ def cerrar_sesion(request):
     logout(request)
     return redirect('base')
 
-
 # Mmuestra la sección "Quiénes Somos"
 def quienes_somos(request):
     return render(request, 'quienes_somos.html')
@@ -193,9 +192,13 @@ def modificar_cuenta(request):
         user_form = FormularioActualizacionCuenta(instance=request.user)
     return render(request, 'modificar_cuenta.html', {'user_form': user_form})
 
-#Vista para elimar cuenta usuario
+# Vista para eliminar cuenta usuario
 @login_required
 def eliminar_cuenta(request):
     if request.method == "POST":
+        # Elimina el usuario actual
         request.user.delete()
-    return render(request, 'confirmar_eliminacion_cuenta.html')
+        messages.success(request, "Tu cuenta ha sido eliminada exitosamente.")
+        return redirect('base')  # Asegúrate de que 'base' sea una URL válida en tu proyecto.
+    # Si no es POST, redirige a la página de modificación de cuenta
+    return redirect('modificar_cuenta')
