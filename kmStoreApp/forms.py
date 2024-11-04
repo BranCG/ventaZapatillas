@@ -3,12 +3,11 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import Producto, OrdenEnvio
 
+
 # Formulario para registrar nuevos usuarios
-
-
 class FormularioRegistro(UserCreationForm):
     email = forms.EmailField(
-        required=True, help_text='Requerido. Ingresa una dirección de correo electrónico válida.')
+        required=True, help_text='Requerido. Ingresa una dirección de correo electrónico válida.') #alerta para ingresar mail valido.
 
     class Meta:
         model = User
@@ -18,7 +17,7 @@ class FormularioRegistro(UserCreationForm):
 # Formulario para crear o editar productos
 class FormularioProducto(forms.ModelForm):
     nombre = forms.CharField(label="Nombre del Producto")
-    descripcion = forms.CharField(label="Descripción", widget=forms.Textarea)
+    descripcion = forms.CharField(label="Descripción", widget=forms.Textarea) #campo  de texto expandido.
     precio = forms.DecimalField(
         label="Precio", max_digits=10, decimal_places=2)
     stock = forms.IntegerField(label="Stock")
