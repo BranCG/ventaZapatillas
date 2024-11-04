@@ -14,5 +14,13 @@
             </div>
             <button type="submit" class="btn btn-warning p-2 mt-4 mb-4">Iniciar Sesión</button>
         </form>
+        <!-- Me aseguro de mostrar el mensaje de error cual sea -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 {% endblock %}

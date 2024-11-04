@@ -1,12 +1,12 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import Producto, OrdenEnvio
 
 # Formulario para registrar nuevos usuarios
 
 
-class RegistroUsuarioForm(UserCreationForm):
+class FormularioRegistro(UserCreationForm):
     email = forms.EmailField(
         required=True, help_text='Requerido. Ingresa una dirección de correo electrónico válida.')
 
@@ -23,11 +23,11 @@ class FormularioProducto(forms.ModelForm):
         label="Precio", max_digits=10, decimal_places=2)
     stock = forms.IntegerField(label="Stock")
     imagen = forms.ImageField(
-        label="Imagen", required=False)  #Campo de imagen
+        label="Imagen", required=False)  # Campo de imagen
 
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'stock','imagen']
+        fields = ['nombre', 'descripcion', 'precio', 'stock', 'imagen']
 
 
 # Formulario para ingresar los datos de envío de una orden
@@ -42,3 +42,11 @@ class FormularioEnvio(forms.ModelForm):
     class Meta:
         model = OrdenEnvio
         fields = ['direccion', 'ciudad', 'region','codigo_postal', 'telefono', 'email']
+
+# Formulario para actualizar datos de usuarios.
+class FormularioActualizacionCuenta(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+

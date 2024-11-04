@@ -37,7 +37,11 @@ urlpatterns = [
     path('producto/actualizar/<int:producto_id>/',views.actualizar_producto, name='actualizar_producto'),
     path('quienes_somos/', views.quienes_somos, name='quienes_somos'),
     path('cerrandoSesion/', views.cerrar_sesion, name='cerrarSesion'),
+    path('mi-cuenta/', views.modificar_cuenta, name='modificar_cuenta'),
+    path('eliminar-cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+# Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
+# verificando si DEBUG está activado y usando MEDIA_URL y MEDIA_ROOT para definir su acceso.

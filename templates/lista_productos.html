@@ -4,6 +4,14 @@
 {% load static %}
 <div class="container mt-5">
     <div class="row">
+        <!-- Me aseguro de mostrar el mensaje de Producto agregado, modificado o eliminado con exito! -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% for producto in productos %}
             <div class="col-md-4">
                 <div class="card mb-4">

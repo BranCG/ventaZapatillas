@@ -1,7 +1,7 @@
 {% extends 'home.html' %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Añadir Nuevo Producto</h2>
+<div class="container mt-5 bg-primary text-white" style="border-radius: 20px;">
+    <h2 class="mt-5" style="text-align: center; padding: 20px;">Añadir Nuevo Producto</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
     
@@ -17,20 +17,20 @@
 
         <div class="form-group">
             <label for="precio">Precio:</label>
-            <input type="number" name="precio" id="precio" class="form-control" step="0.01" min="0" required>
+            <input type="number" name="precio" id="precio" placeholder="Ingresa valores númericos" class="form-control"required>
         </div>
 
         <div class="form-group">
             <label for="stock">Cantidad en Stock:</label>
-            <input type="number" name="stock" id="stock" class="form-control" min="0" required>
+            <input type="number" name="stock" id="stock" placeholder="Ingresa valores númericos"  class="form-control" min="0" required>
         </div>
 
-        <div class="form-group">
-            <label for="imagen">Imagen del Producto:</label>
+        <div class="form-group mt-4 bg-success">
+            <label for="imagen">Imagen del Producto (JPG):</label>
             <input type="file" name="imagen" id="imagen" class="form-control-file">
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Guardar Producto</button>
+        <button type="submit" class="btn btn-warning mt-4 mb-4">Guardar Producto</button>
     </form>
 </div>
 {% endblock %}

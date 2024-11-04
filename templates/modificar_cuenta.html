@@ -1,0 +1,34 @@
+{% extends "home.html" %}
+
+{% block content %}
+<div class="container mt-5 bg-primary text-white" style="border-radius: 20px;">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <h3 style="text-align: center;">Modificar Datos</h3>
+        <div class="form-group">
+            <label for="username">Nombre de Usuario: </label>
+            {{ user_form.username.label_tag }}
+            <input type="text" name="username" id="username" placeholder="*Requerido. 150 caracteres como máximo. Únicamente letras, dígitos y @/./+/-/_" class="form-control" value="{{ user_form.username.value|default_if_none:'' }}" required>
+            {% if user_form.username.errors %}
+                <div class="text-danger">{{ user_form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            {{ user_form.email.label_tag }}
+            <input type="email" name="email" id="email" placeholder="*Requerido. Ingrese dirección válida." class="form-control" value="{{ user_form.email.value|default_if_none:'' }}" required>
+            {% if user_form.email.errors %}
+                <div class="text-danger">{{ user_form.email.errors }}</div>
+            {% endif %}
+            <button type="submit" name="update_data" class="btn btn-warning mt-4">Actualizar Datos</button>
+        </div>
+    </form>
+
+    <form method="POST" action="{% url 'eliminar_cuenta' %}" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar Cuenta</button>
+    </form>
+</div>
+{% endblock %}

@@ -4,46 +4,47 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Producto, Carrito, CarritoItem
-from .forms import FormularioProducto, RegistroUsuarioForm, FormularioEnvio
+from .forms import FormularioProducto, FormularioRegistro, FormularioEnvio, FormularioActualizacionCuenta, FormularioRegistro
 
 
 # Create your views here.
-# Vista para iniciar sesión
+# Vista para iniciar sesionn
 def iniciar_sesion(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user is not None:  # Si existe lo redirecciono al ser admin a panel_admin, sino base.html de cliente autenticado.
             login(request, user)
             return redirect('panel_admin') if user.is_staff else redirect('base')
+        elif user is None:   # me aseguro que si no existe muestro este mensaje.
+            messages.error(request, 'Cuenta de usuario no existe')
         else:
-            messages.error(
-                request, 'Nombre de usuario o contraseña incorrectos.')
+            messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
     return render(request, 'login.html')
 
 
 # Vista para registrar nuevos usuarios
 def registrar_usuario(request):
     if request.method == 'POST':
-        form = RegistroUsuarioForm(request.POST)
+        form = FormularioRegistro(request.POST)
         if form.is_valid():
             usuario = form.save()
-            # Inicia sesión automáticamente después del registro
+            #Inicia sesión automáticamente después del registro
             login(request, usuario)
             return redirect('base')
     else:
-        form = RegistroUsuarioForm()
+        form = FormularioRegistro()
     return render(request, 'registro.html', {'form': form})
 
 
-# Cierra la sesión del usuario
+#Cierra la sesión del usuario
 def cerrar_sesion(request):
     logout(request)
     return redirect('base')
 
 
-# Muestra la sección "Quiénes Somos"
+# Mmuestra la sección "Quiénes Somos"
 def quienes_somos(request):
     return render(request, 'quienes_somos.html')
 
@@ -69,6 +70,7 @@ def crear_producto(request):
         form = FormularioProducto(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, '¡Producto creado con éxito!')
             return redirect('lista_productos')
     else:
         form = FormularioProducto()
@@ -84,7 +86,8 @@ def actualizar_producto(request, producto_id):
         form = FormularioProducto(
             request.POST, request.FILES, instance=producto)
         if form.is_valid():
-            form.save()  # Guarda los cambios
+            form.save()  #Guardo los cambios
+            messages.success(request, '¡Producto actualizado con éxito!')
             return redirect('lista_productos')
     else:
         form = FormularioProducto(instance=producto)
@@ -98,6 +101,7 @@ def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == "POST":
         producto.delete()
+        messages.success(request, '¡Producto eliminado con éxito!')
         return redirect('lista_productos')
     return render(request, 'confirmar_eliminacion.html', {'producto': producto})
 
@@ -153,7 +157,8 @@ def formulario_despacho(request):
             orden = formulario.save(commit=False)
             orden.usuario = request.user
             orden.save()
-            messages.success(request, "¡GRACIAS POR PREFERIRNOS! Pronto recibirás un correo para elegir tu talla y forma de pago.")
+            messages.success(
+                request, "¡GRACIAS POR PREFERIRNOS! Pronto recibirás un correo para elegir tu talla y forma de pago.")
             return redirect('carrito')
     else:
         formulario = FormularioEnvio()
@@ -163,3 +168,29 @@ def formulario_despacho(request):
 # Muestra la página base
 def base(request):
     return render(request, 'base.html')
+
+
+# Vista para modificar datos del usuario
+@login_required
+def modificar_cuenta(request):
+    if request.method == 'POST':
+        user_form = FormularioActualizacionCuenta(request.POST, instance=request.user)
+        if 'update_data' in request.POST and user_form.is_valid():
+            user_form.save()
+            messages.success(
+                request, 'Tus datos han sido actualizados con éxito.')
+            return redirect('base')
+        else:
+            messages.error(request, 'Por favor corrige los errores.')
+    else:
+        user_form = FormularioActualizacionCuenta(instance=request.user)
+
+    return render(request, 'modificar_cuenta.html', {'user_form': user_form})
+
+@login_required
+def eliminar_cuenta(request):
+    if request.method == "POST":
+        request.user.delete()
+        messages.success(request, 'Tu cuenta ha sido eliminada.')
+        return redirect('base')
+    return render(request, 'confirmar_eliminacion_cuenta.html')

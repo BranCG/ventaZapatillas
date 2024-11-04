@@ -14,8 +14,7 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-custom bg-warning">
+    <nav class="navbar navbar-custom bg-warning" style="font-family:Verdana, Geneva, Tahoma, sans-serif">
     <div class="container">
         <a class="navbar-brand" href="{% url 'base' %}">KM Store</a>
         <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
@@ -72,12 +71,12 @@
         </div>
     </div>
 </nav>
-<!-- Contenido que variare -->
+<!-- Contenido que variablre, se vera sin imagen  -->
 {% block content %}
 {% endblock %}
 
 
-    <footer class="footer">
+    <footer class="footer" style="font-family:Verdana, Geneva, Tahoma, sans-serif"> 
     <div class="container-fluid bg-warning text-dark py-4 mt-3 text-start">
         <div class="row text-center">
             <div class="col-md-4">

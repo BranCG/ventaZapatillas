@@ -9,8 +9,8 @@
     {% load static %}
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body>
-    <nav class="navbar navbar-custom bg-warning">
+<body >
+    <nav class="navbar navbar-custom bg-warning" style="font-family:Verdana, Geneva, Tahoma, sans-serif">
     <div class="container">
         <a class="navbar-brand" href="{% url 'base' %}">KM Store</a>
     <div class="navbar-nav-container navbar-expand-lg d-flex justify-content-between flex-grow-1">
@@ -50,6 +50,9 @@
                         <span class="badge bg-danger">{{ total_items }}</span>
                     {% endif %}
                 </a>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'modificar_cuenta' %}">Mi Cuenta</a>
+            </li>   
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
             </li>
@@ -100,7 +103,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" style="font-family:Verdana, Geneva, Tahoma, sans-serif">
     <div class="container-fluid bg-warning text-dark py-4 mt-3 text-start">
         <div class="row text-center">
             <div class="col-md-4">
