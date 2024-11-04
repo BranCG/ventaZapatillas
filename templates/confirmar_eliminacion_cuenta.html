@@ -8,7 +8,7 @@
 
 <form method="POST">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <a href="{% url 'base' %}" class="btn btn-secondary">Confirmar</a>
 </form>
 <a href="{% url 'modificar_cuenta' %}" class="btn btn-secondary">Cancelar</a>
 {% endblock %}

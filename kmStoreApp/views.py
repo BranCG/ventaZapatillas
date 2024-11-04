@@ -198,6 +198,4 @@ def modificar_cuenta(request):
 def eliminar_cuenta(request):
     if request.method == "POST":
         request.user.delete()
-        messages.success(request, '¡Tu cuenta ha sido eliminada con éxito!')
-        return redirect('base')
     return render(request, 'confirmar_eliminacion_cuenta.html')
