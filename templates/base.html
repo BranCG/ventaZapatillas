@@ -94,10 +94,9 @@
     <div class="container main-content">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{% if message.tags == "success" %}{{ message }}{% endif %}</div>
+                <div class="alert alert-{{ message.tags }} mt-4">{% if message.tags == "success" %}{{ message }}{% endif %}</div>
             {% endfor %}
         {% endif %}
-        
         {% block content %}
         {% endblock %}
     </div>

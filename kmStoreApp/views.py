@@ -118,16 +118,25 @@ def agregar_al_carrito(request, producto_id):
     return redirect('carrito')
 
 
-# Muestra el carrito del usuario con detalles de los artículos y totales
+#Muestra el carrito del usuario con detalles de los artículos y totales
 @login_required
 def ver_carrito(request):
     carrito = Carrito.objects.filter(usuario=request.user).first()
     items = carrito.carritoitem_set.all() if carrito else []
-    total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0
+    # Comprueba si items es un queryset antes de intentar agregar
+    if items:
+        total_items = items.aggregate(total=Sum('cantidad'))['total'] or 0
+    else:
+        total_items = 0  # Valor predeterminado si no hay artículos
     for item in items:
         item.total_item = item.cantidad * item.producto.precio
     total_carrito = sum(item.total_item for item in items)
-    return render(request, 'carrito.html', {'items': items, 'total_items': total_items, 'total_carrito': total_carrito})
+
+    return render(request, 'carrito.html', {
+        'items': items,
+        'total_items': total_items,
+        'total_carrito': total_carrito
+    })
 
 
 # Elimina un producto del carrito o disminuye su cantidad
@@ -157,9 +166,8 @@ def formulario_despacho(request):
             orden = formulario.save(commit=False)
             orden.usuario = request.user
             orden.save()
-            messages.success(
-                request, "¡GRACIAS POR PREFERIRNOS! Pronto recibirás un correo para elegir tu talla y forma de pago.")
-            return redirect('carrito')
+            messages.success(request, "¡GRACIAS POR PREFERIRNOS! Pronto recibirás un correo para elegir tu talla y forma de pago.")
+            return redirect('base')
     else:
         formulario = FormularioEnvio()
     return render(request, 'formulario_despacho.html', {'formulario': formulario})
@@ -170,27 +178,26 @@ def base(request):
     return render(request, 'base.html')
 
 
-# Vista para modificar datos del usuario
+#Vista para modificar datos del usuario
 @login_required
 def modificar_cuenta(request):
     if request.method == 'POST':
         user_form = FormularioActualizacionCuenta(request.POST, instance=request.user)
         if 'update_data' in request.POST and user_form.is_valid():
             user_form.save()
-            messages.success(
-                request, 'Tus datos han sido actualizados con éxito.')
+            messages.success(request, '¡Tus datos han sido actualizados con éxito!.')
             return redirect('base')
         else:
             messages.error(request, 'Por favor corrige los errores.')
     else:
         user_form = FormularioActualizacionCuenta(instance=request.user)
-
     return render(request, 'modificar_cuenta.html', {'user_form': user_form})
 
+#Vista para elimar cuenta usuario
 @login_required
 def eliminar_cuenta(request):
     if request.method == "POST":
         request.user.delete()
-        messages.success(request, 'Tu cuenta ha sido eliminada.')
+        messages.success(request, '¡Tu cuenta ha sido eliminada con éxito!')
         return redirect('base')
     return render(request, 'confirmar_eliminacion_cuenta.html')
