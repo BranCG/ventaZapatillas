@@ -71,12 +71,12 @@
         </div>
     </div>
 </nav>
-<!-- Contenido que variablre, se vera sin imagen  -->
+
 {% block content %}
 {% endblock %}
 
 
-    <footer class="footer" style="font-family:Verdana, Geneva, Tahoma, sans-serif"> 
+    <footer class="d-flex" style="font-family:Verdana, Geneva, Tahoma, sans-serif; margin-top: 166px;">
     <div class="container-fluid bg-warning text-dark py-4 mt-3 text-start">
         <div class="row text-center">
             <div class="col-md-4">
@@ -91,9 +91,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'base' %}">Inicio</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'lista_productos' %}">Productos</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'quienes_somos' %}">Quienes Somos</a>
                 </li>
