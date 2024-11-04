@@ -18,9 +18,11 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'base' %}">Inicio</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'lista_productos' %}">Productos</a>
         </li>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'quienes_somos' %}">Quienes Somos</a>
         </li>
@@ -42,18 +44,15 @@
             <li class="nav-item mt-2">
                 <p>Bienvenido, {{ user.username }}.</p>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'carrito' %}">
+            <a class="nav-link" href="{% url 'carrito' %}">
                     <i class="fas fa-shopping-cart"></i> Carrito
                     {% if total_items > 0 %}
                         <span class="badge bg-danger">{{ total_items }}</span>
                     {% endif %}
                 </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'cerrarSesion' %}">Cerrar Sesión</a>
             </li>
-        
         {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
@@ -65,13 +64,30 @@
         </ul>
     </div>
 </nav>
-    <div class="container mt-3 d-flex justify-content-center align-items-center">
-        <button style="width: 200px; font-size: 20px; font-family:monospace; position:relative; left: 400px; border-radius: 20px; background-color: aqua; border-color: white;">
-            <a class="nav-link " href="{% url 'lista_productos' %}">VER PRODUCTOS</a>
-        </button>
-        <img src="{% static 'images/fondozapa.jpg' %}">
+    {% if user.is_authenticated %}
+    <div class="container mt-3 d-flex flex-column align-items-center">
+    <div class="d-flex justify-content-center mb-3">
+        <img src="{% static 'images/fondozapa.jpg' %}" class="img-fluid" style="max-width: 100%;">
     </div>
-    <!-- Main Content -->
+    <div class="d-flex justify-content-center">
+        <div class="btn btn-primary text-white" style="width: 300px; font-size: 20px; font-family: monospace; border-radius: 20px;">
+            <a class="nav-link text-white" href="{% url 'lista_productos' %}">VER PRODUCTOS</a>
+        </div>
+    </div>
+    </div>
+    {% else %}
+    <div class="container mt-3 d-flex flex-column flex-md-row align-items-center">
+    <div class="d-flex flex-column flex-md-row justify-content-center mb-3 mb-md-0">
+        <div class="btn btn-primary text-whitemx-2" style="width: 300px; font-size: 20px; font-family: monospace; border-radius: 20px;">
+            <a class="nav-link" href="{% url 'iniciar_sesion' %}">INICIA SESIÓN PARA <br>VER PRODUCTOS</a>
+        </div>
+        <div class="btn btn-primary text-white mx-2" style="width: 300px; font-size: 20px; font-family: monospace; border-radius: 20px;">
+            <a class="nav-link" href="{% url 'registro' %}">REGISTRATE PARA <br>VER PRODUCTOS</a>
+        </div>
+    </div>
+    <img src="{% static 'images/fondozapa.jpg' %}" class="img-fluid mt-3 mt-md-0" style="max-width: 100%;">
+    </div>
+    {% endif %}
     <div class="container main-content">
         {% if messages %}
             {% for message in messages %}
@@ -79,7 +95,8 @@
             {% endfor %}
         {% endif %}
         
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
 
     <!-- Footer -->
@@ -98,9 +115,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'base' %}">Inicio</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'lista_productos' %}">Productos</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'quienes_somos' %}">Quienes Somos</a>
                 </li>

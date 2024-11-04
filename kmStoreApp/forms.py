@@ -1,10 +1,9 @@
-# forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Producto, OrdenEnvio
 
-# Formulario de Registro de Usuario
+# Formulario para registrar nuevos usuarios
 
 
 class RegistroUsuarioForm(UserCreationForm):
@@ -16,7 +15,7 @@ class RegistroUsuarioForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
-# Formulario para Crear/Editar Producto
+# Formulario para crear o editar productos
 class FormularioProducto(forms.ModelForm):
     nombre = forms.CharField(label="Nombre del Producto")
     descripcion = forms.CharField(label="Descripción", widget=forms.Textarea)
@@ -24,13 +23,14 @@ class FormularioProducto(forms.ModelForm):
         label="Precio", max_digits=10, decimal_places=2)
     stock = forms.IntegerField(label="Stock")
     imagen = forms.ImageField(
-        label="Imagen", required=False)  # Campo de imagen
+        label="Imagen", required=False)  #Campo de imagen
 
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'stock','imagen']  # Asegúrate de incluir 'imagen'
+        fields = ['nombre', 'descripcion', 'precio', 'stock','imagen']
 
-# Formulario para los Datos de Envío
+
+# Formulario para ingresar los datos de envío de una orden
 class FormularioEnvio(forms.ModelForm):
     direccion = forms.CharField(label="Dirección")
     ciudad = forms.CharField(label="Ciudad")
@@ -41,5 +41,4 @@ class FormularioEnvio(forms.ModelForm):
 
     class Meta:
         model = OrdenEnvio
-        fields = ['direccion', 'ciudad', 'region',
-                'codigo_postal', 'telefono', 'email']
+        fields = ['direccion', 'ciudad', 'region','codigo_postal', 'telefono', 'email']
