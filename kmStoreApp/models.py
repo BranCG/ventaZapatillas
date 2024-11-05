@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 # Modelo para representar los productos disponibles en la tienda
 class Producto(models.Model):
     nombre = models.CharField(max_length=200)
-    descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    descripcion = models.TextField(max_length=500)
+    precio = models.DecimalField(max_digits=10 , decimal_places=2) #especificaa el número total de dígitos que se pueden almacenar
     stock = models.PositiveIntegerField()
-    imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
+    imagen = models.ImageField(upload_to='productos/', blank=True, null=True) # uploadindica la carpeta en la que se almacenarán las imágenes subidas. blank no requerido, nulo para default imagen.
 
     def __str__(self):
         return self.nombre
@@ -17,8 +17,8 @@ class Producto(models.Model):
 
 # Modelo para representar el carrito de compras de un usuario
 class Carrito(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    productos = models.ManyToManyField(Producto, through='CarritoItem')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE) # especifica lo que sucede cuando el usuario relacionado es eliminado. CASCADE indica que si el usuario se elimina, todos los carritos asociados con él también se eliminarán automáticamente.
+    productos = models.ManyToManyField(Producto, through='CarritoItem') #Este parámetro indica que la relación de muchos a muchos entre Carrito y Producto se gestionará a través de un modelo intermedio llamado CarritoItem. 
 
 
 # Modelo para representar los artículos dentro del carrito de un usuario
