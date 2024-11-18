@@ -1,24 +1,9 @@
-"""
-URL configuration for kmStore project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.base, name='base')
-Class-based views
-    1. Add an import:  from other_app.views import base
-    2. Add a URL to urlpatterns:  path('', base.as_view(), name='base')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from kmStoreApp import views
 from django.conf import settings
+from ControlStock import views as stock_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,10 +24,13 @@ urlpatterns = [
     path('cerrar_sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('mi_cuenta/', views.modificar_cuenta, name='modificar_cuenta'),
     path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
-]
-
-
-# Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
+    
+    # URLs de control de stock
+    path('stock/reporte/', stock_views.reporte_stock, name='reporte_stock'),
+    path('stock/movimientos/', stock_views.movimientos_stock, name='movimientos_stock'),
+    path('stock/movimientos/<int:producto_id>/', stock_views.movimientos_producto, name='movimientos_producto'),
+    path('stock/registrar-movimiento/<int:producto_id>/', stock_views.registrar_movimiento, name='registrar_movimiento'),
+]# Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
 # verificando si DEBUG está activado y usando MEDIA_URL y MEDIA_ROOT para definir su acceso.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
