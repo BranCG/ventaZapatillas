@@ -1,0 +1,87 @@
+{% extends "home.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2>Reporte de Stock</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Stock Actual</th>
+                            <th>Stock Mínimo</th>
+                            <th>Stock Máximo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>{{ producto.configuracionstock.stock_minimo }}</td>
+                            <td>{{ producto.configuracionstock.stock_maximo }}</td>
+                            <td>
+                                {% if producto.necesita_reorden %}
+                                    <span class="badge bg-danger">Stock Bajo</span>
+                                {% else %}
+                                    <span class="badge bg-success">Normal</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalStock{{ producto.id }}">
+                                    Ajustar Stock
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Modal para ajuste de stock -->
+                        <div class="modal fade" id="modalStock{{ producto.id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Ajustar Stock - {{ producto.nombre }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" action="{% url 'registrar_movimiento' producto.id %}">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Tipo de Movimiento</label>
+                                                <select name="tipo_movimiento" class="form-select" required>
+                                                    <option value="ENTRADA">Entrada de Stock</option>
+                                                    <option value="SALIDA">Salida de Stock</option>
+                                                    <option value="AJUSTE">Ajuste de Inventario</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Cantidad</label>
+                                                <input type="number" name="cantidad" class="form-control" min="1" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nota</label>
+                                                <textarea name="nota" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

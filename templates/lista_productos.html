@@ -1,33 +1,99 @@
 {% extends 'base.html' %}
-
 {% block content %}
 {% load static %}
+
 <div class="container mt-5">
     <div class="row">
         {% for producto in productos %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    {% if producto.imagen %}
-                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
-                    {% else %}
-                        <img src="{% static 'default.png' %}" class="card-img-top" alt="Imagen no disponible">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ producto.nombre }}</h5>
-                        <p class="card-text">{{ producto.descripcion }}</p>
-                        <p class="card-text"><strong>Precio:</strong> ${{ producto.precio }}</p>
-                        <p class="card-text"><strong>Stock:</strong> {{ producto.stock }}</p>
-                        {% if not user.is_staff %}
-                            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-primary text-white">Agregar al Carrito</a>
-                        {% endif %}
-                        {% if user.is_staff %}
-                            <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger">Eliminar</a>
-                            <a href="{% url 'actualizar_producto' producto.id %}" class="btn btn-warning">Actualizar</a>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                {% else %}
+                    <img src="{% static 'default.png' %}" class="card-img-top" alt="Imagen no disponible">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text">{{ producto.descripcion }}</p>
+                    <p class="card-text"><strong>Precio:</strong> ${{ producto.precio }}</p>
+                    
+                    <!-- Visualización del stock -->
+                    <div class="stock-status mb-3">
+                        {% if producto.stock > 0 %}
+                            <div class="d-flex align-items-center">
+                                <span class="badge {% if producto.stock < producto.configuracionstock.stock_minimo %}bg-warning{% else %}bg-success{% endif %} me-2">
+                                    {{ producto.stock }} unidades disponibles
+                                </span>
+                            </div>
+                        {% else %}
+                            <span class="badge bg-danger">Sin stock</span>
                         {% endif %}
                     </div>
+
+                    {% if not user.is_staff %}
+                        {% if producto.stock > 0 %}
+                            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-primary text-white">
+                                Agregar al Carrito
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>Agotado</button>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                        <div class="mt-2">
+                            <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger">Eliminar</a>
+                            <a href="{% url 'actualizar_producto' producto.id %}" class="btn btn-warning">Actualizar</a>
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalStock{{ producto.id }}">
+                                Ajustar Stock
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
+        </div>
+
+        {% if user.is_staff %}
+        <!-- Modal para ajuste de stock -->
+        <div class="modal fade" id="modalStock{{ producto.id }}" tabindex="-1" aria-labelledby="modalStockLabel{{ producto.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalStockLabel{{ producto.id }}">Ajustar Stock - {{ producto.nombre }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{% url 'registrar_movimiento' producto.id %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="tipo_movimiento" class="form-label">Tipo de Movimiento</label>
+                                <select name="tipo_movimiento" id="tipo_movimiento" class="form-select" required>
+                                    <option value="ENTRADA">Entrada de Stock</option>
+                                    <option value="SALIDA">Salida de Stock</option>
+                                    <option value="AJUSTE">Ajuste de Inventario</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label">Cantidad</label>
+                                <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nota" class="form-label">Nota</label>
+                                <textarea name="nota" id="nota" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         {% endfor %}
     </div>
 </div>
+
 {% endblock %}
