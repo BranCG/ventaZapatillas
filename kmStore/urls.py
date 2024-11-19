@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from kmStoreApp import views
 from django.conf import settings
 from ControlStock import views as stock_views
+from kmBoletas.views import enviar_boleta_por_correo,crear_boleta
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,13 +24,15 @@ urlpatterns = [
     path('quienes_somos/', views.quienes_somos, name='quienes_somos'),
     path('cerrar_sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('mi_cuenta/', views.modificar_cuenta, name='modificar_cuenta'),
-    path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
-    
+    path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),    
     # URLs de control de stock
     path('stock/reporte/', stock_views.reporte_stock, name='reporte_stock'),
     path('stock/movimientos/', stock_views.movimientos_stock, name='movimientos_stock'),
     path('stock/movimientos/<int:producto_id>/', stock_views.movimientos_producto, name='movimientos_producto'),
     path('stock/registrar-movimiento/<int:producto_id>/', stock_views.registrar_movimiento, name='registrar_movimiento'),
+    #Boletas
+    path('enviar-boleta/<int:boleta_id>/', enviar_boleta_por_correo, name='enviar_boleta'),
+    path('crear-boleta',crear_boleta,name="crear_boleta"),
 ]# Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
 # verificando si DEBUG está activado y usando MEDIA_URL y MEDIA_ROOT para definir su acceso.
 if settings.DEBUG:
