@@ -1,6 +1,6 @@
 from django.db import models
 from kmStoreApp.models import Producto
-from ControlStock import models
+# from ControlStock.models import 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
@@ -25,7 +25,7 @@ class DetalleBoleta(models.Model):
     subtotal = models.DecimalField(max_digits=15, decimal_places=0)
 
     def save(self, *args, **kwargs):
-        self.subtotal = self.cantidad * self.producto.precio_unitario
+        self.subtotal = self.cantidad * self.producto.precio
         super().save(*args, **kwargs)
 
     def __str__(self):
