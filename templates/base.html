@@ -32,13 +32,14 @@
                     <ul class="navbar-nav">
                         {% if user.is_authenticated %}
                             <li class="nav-item mt-2">
-                                <p>Bienvenido, {{ user.username }}{% if user.is_staff %}, eres administrador!{% endif %}.</p>
+                                <p>Bienvenido {{ user.username }} {% if user.is_staff %}, eres administrador!{% endif %}.</p>
                             </li>
                             {% if user.is_staff %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
                             </li>
                             {% endif %}
+                            {% if user.is_authenticated and not user.is_staff %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'carrito' %}"><i class="fas fa-shopping-cart"></i> Carrito
                                     {% if total_items > 0 %}
@@ -46,9 +47,12 @@
                                     {% endif %}
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if user.is_authenticated and not user.is_staff %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'modificar_cuenta' %}">Mi Cuenta</a>
                             </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
                             </li>

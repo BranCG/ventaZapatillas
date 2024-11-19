@@ -27,7 +27,6 @@ class MovimientoStock(models.Model):
             
         super().save(*args, **kwargs)
         
-        # Actualizar el stock del producto
         self.producto.actualizar_stock()
 
 class ConfiguracionStock(models.Model):

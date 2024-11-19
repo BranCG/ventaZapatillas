@@ -34,7 +34,9 @@ def crear_boleta(request):
             cantidad=item.cantidad,
             subtotal=item.cantidad * item.producto.precio
         )
-
+        producto= item.producto
+        producto.stock = producto.stock - item.cantidad
+        producto.save()
     # Calcular el total de la boleta
     boleta.calcular_total()
 

@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="container mt-5 bg-primary text-white p-4" style="border-radius: 20px;">
-    <h2 class="bg-warning text-dark">Panel de Administración</h2>
+    <h2 class="bg-warning text-dark p-2">Panel de Administración</h2>
 
     <p>Bienvenido, {{ user.username }}. Aquí puedes gestionar el contenido del sitio.</p>
 
@@ -10,20 +10,20 @@
         <div class="col-md-6">
             <h3>Gestión de Productos</h3>
             <ul class="list-unstyled">
-                <li class="mb-2"><a href="{% url 'lista_productos' %}" class="text-white">Ver productos ACTUALIZAR o ELIMINAR</a></li>
+                <li class="mb-2"><a href="{% url 'lista_productos' %}" class="text-white">Ver productos</a></li>
                 <li class="mb-2"><a href="{% url 'crear_producto' %}" class="text-white">Añadir nuevo producto</a></li>
             </ul>
         </div>
-        
+
         <div class="col-md-6">
             <h3>Gestión de Stock</h3>
             <ul class="list-unstyled">
-                <li class="mb-2"><a href="{% url 'reporte_stock' %}" class="text-white">Reporte de Stock</a></li>
-                <li class="mb-2"><a href="{% url 'movimientos_stock' %}" class="text-white">Historial de Movimientos</a></li>
+                <li class="mb-2"><a href="{% url 'movimientos_stock' %}" class="text-white">Ver Historial de Movimientos</a></li>
             </ul>
         </div>
     </div>
 
+    {% if productos_bajo_stock %}
     <div class="mt-4">
         <h3>Productos con Stock Bajo</h3>
         <div class="table-responsive">
@@ -43,7 +43,9 @@
                         <td>{{ producto.stock }}</td>
                         <td>{{ producto.configuracionstock.stock_minimo }}</td>
                         <td>
-                            <a href="{% url 'registrar_movimiento' producto.id %}" class="btn btn-warning btn-sm">Ajustar Stock</a>
+                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalStock{{ producto.id }}">
+                                Ajustar Stock
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -51,6 +53,39 @@
             </table>
         </div>
     </div>
+    {% endif %}
+
+    {% if movimientos %}
+    <div class="mt-4">
+        <h3>Historial de Movimientos</h3>
+        <div class="table-responsive">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>Usuario</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movimiento in movimientos %}
+                    <tr>
+                        <td>{{ movimiento.fecha|date:"d/m/Y H:i" }}</td>
+                        <td>{{ movimiento.producto.nombre }}</td>
+                        <td>{{ movimiento.get_tipo_movimiento_display }}</td>
+                        <td>{{ movimiento.cantidad }}</td>
+                        <td>{{ movimiento.usuario.username }}</td>
+                        <td>{{ movimiento.nota }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}

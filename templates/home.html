@@ -33,7 +33,7 @@
                     <ul class="navbar-nav">
                         {% if user.is_authenticated and user.is_staff %}
                             <li class="nav-item mt-2">
-                                <p>¡Hola {{ user.username }}, eres administrador!</p>
+                                <p>Bienvenido {{ user.username }}, eres administrador!</p>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'panel_admin' %}">Panel Admin</a>
