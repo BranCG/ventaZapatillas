@@ -16,7 +16,7 @@ class Boleta(models.Model):
         self.save()
 
     def __str__(self):
-        return f"Boleta #{self.numero_boleta} - {self.cliente.nombre}"
+        return f"Boleta #{self.numero_boleta} - {self.cliente.username}"
 
 class DetalleBoleta(models.Model):
     boleta = models.ForeignKey(Boleta, on_delete=models.CASCADE, related_name='detalles')
