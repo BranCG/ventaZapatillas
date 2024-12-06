@@ -9,7 +9,7 @@ class Boleta(models.Model):
     numero_boleta = models.CharField(max_length=20, unique=True)
     fecha_emision = models.DateTimeField(auto_now_add=True)
     cliente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='boletas')
-    total = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    total = models.PositiveIntegerField()
 
     def calcular_total(self):
         self.total = sum(detalle.subtotal for detalle in self.detalles.all())
@@ -22,7 +22,7 @@ class DetalleBoleta(models.Model):
     boleta = models.ForeignKey(Boleta, on_delete=models.CASCADE, related_name='detalles')
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField()
-    subtotal = models.DecimalField(max_digits=15, decimal_places=0)
+    subtotal = models.PositiveIntegerField()
 
     def save(self, *args, **kwargs):
         self.subtotal = self.cantidad * self.producto.precio

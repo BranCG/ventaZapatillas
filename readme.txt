@@ -12,3 +12,4 @@ pip install pymysql
 pip install icalendar
 pip install pytz    
 pip install unidecode
+pip install djangorestframework

@@ -9,7 +9,7 @@ from django.db.models import Sum
 class Producto(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=500)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    precio = models.PositiveIntegerField()
     stock = models.PositiveIntegerField()
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
 
