@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ControlStock',
     'kmBoletas',
     'API',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

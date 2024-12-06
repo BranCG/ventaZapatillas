@@ -55,11 +55,11 @@ class CarritoList(APIView):
 
     def get(self,request):
         carrito=Carrito.objects.all()
-        serializer=CarritoItemSerializer(carrito,many=True)
+        serializer=CarritoSerializer(carrito,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=CarritoItemSerializer(data=request)
+        serializer=CarritoSerializer(data=request)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -75,7 +75,7 @@ class CarritoDetalle(APIView):
         
     def get(self,request,pk):
         carrito=self.get_object(pk)
-        serializer=CarritoItemSerializer(carrito)
+        serializer=CarritoSerializer(carrito)
         return Response(serializer.data)
     
     def put(self,request,pk):
