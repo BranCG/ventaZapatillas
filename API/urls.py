@@ -14,7 +14,7 @@ urlpatterns =[
     path('boleta/',views.boletaList.as_view()),
     path('boleta/<int:pk>',views.detalleBoletaDetalle.as_view()),
     path('detalleBoleta/',views.detalleBoletaList.as_view()),
-    path('detalleBoelta/<int:pk>',views.detalleBoletaDetalle.as_view()),
+    path('detalleBoleta/<int:pk>',views.detalleBoletaDetalle.as_view()),
     path('moviemientoStock/',views.movimientosStockList.as_view()),
     path('moviemientoStock/<int:pk>',views.movimientoStockDetalle.as_view()),
     path('configuracionStock/',views.configuracionStokList.as_view()),

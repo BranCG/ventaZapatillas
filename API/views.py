@@ -94,7 +94,7 @@ class CarritoDetalle(APIView):
 class CarritoItemList(APIView):
 
     def get(self,request):
-        carritoItem=carritoItem.objects.all()
+        carritoItem=CarritoItem.objects.all()
         serializer=CarritoItemSerializer(carritoItem,many=True)
         return Response(serializer.data)
 
@@ -219,7 +219,7 @@ class boletaDetalle(APIView):
 class detalleBoletaList(APIView):
 
     def get(self,request):
-        boletaDetalle=boletaDetalle.objects.all()
+        boletaDetalle=DetalleBoleta.objects.all()
         serializer=DetalleBoletaSerializer(boletaDetalle,many=True)
         return Response(serializer.data)
 
