@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from django.conf.urls.static import static
 from kmStoreApp import views
 from django.conf import settings
@@ -33,6 +33,8 @@ urlpatterns = [
     #Boletas
     path('enviar-boleta/<int:boleta_id>/', enviar_boleta_por_correo, name='enviar_boleta'),
     path('crear-boleta',crear_boleta,name="crear_boleta"),
+    path('API/',include('API.urls'))
+
 ]# Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
 # verificando si DEBUG está activado y usando MEDIA_URL y MEDIA_ROOT para definir su acceso.
 if settings.DEBUG:
