@@ -314,7 +314,7 @@ class configuracionStokList(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class movimientoStockDetalle(APIView):
+class configuracionStockDetalle(APIView):
     
     def get_object(self,pk):
         try:
