@@ -33,7 +33,7 @@ urlpatterns = [
     #Boletas
     path('enviar-boleta/<int:boleta_id>/', enviar_boleta_por_correo, name='enviar_boleta'),
     path('crear-boleta',crear_boleta,name="crear_boleta"),
-    path('API/',include('API.urls'))
+    path('API/',include('API.urls'),name='API')
 
 ]# Esta línea permite que Django sirva archivos de medios (como imágenes) en modo de desarrollo,
 # verificando si DEBUG está activado y usando MEDIA_URL y MEDIA_ROOT para definir su acceso.

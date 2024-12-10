@@ -8,7 +8,10 @@ from rest_framework.views import APIView
 from .permissions import IsBrandon
 from django.http import Http404
 
+from django.http import HttpResponse
 
+def api_home(request):
+    return HttpResponse("Bienvenido a la API")
 # Create your views here.
 
 class ProductoList(APIView):

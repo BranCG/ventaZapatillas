@@ -3,6 +3,7 @@ from django.urls import path
 from django.contrib import admin
 
 urlpatterns =[
+    path('', views.api_home,name='API'),
     path('producto/',views.ProductoList.as_view()),
     path('producto/<int:pk>',views.ProductoDetalle.as_view()),
     path('carrito/',views.CarritoList.as_view()),
