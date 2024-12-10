@@ -7,7 +7,6 @@ from django.db.models import Sum
 
 
 class Producto(models.Model):
-    id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=500)
     precio = models.PositiveIntegerField()
