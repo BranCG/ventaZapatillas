@@ -4,13 +4,15 @@ from .models import *
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+
+from .permissions import IsBrandon
 from django.http import Http404
 
 
 # Create your views here.
 
 class ProductoList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         productos=Producto.objects.all()
         serializer=ProductoSerializer(productos,many=True)
@@ -25,7 +27,7 @@ class ProductoList(APIView):
     
 
 class ProductoDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return Producto.objects.get(pk=pk)
@@ -52,7 +54,7 @@ class ProductoDetalle(APIView):
     
 
 class CarritoList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         carrito=Carrito.objects.all()
         serializer=CarritoSerializer(carrito,many=True)
@@ -66,7 +68,7 @@ class CarritoList(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 class CarritoDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return Carrito.objects.get(pk=pk)
@@ -92,7 +94,7 @@ class CarritoDetalle(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class CarritoItemList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         carritoItem=CarritoItem.objects.all()
         serializer=CarritoItemSerializer(carritoItem,many=True)
@@ -107,7 +109,7 @@ class CarritoItemList(APIView):
     
 
 class CarritoItemDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return CarritoItem.objects.get(pk=pk)
@@ -134,7 +136,7 @@ class CarritoItemDetalle(APIView):
     
 
 class ordenEnvioList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         ordenEnvio=OrdenEnvio.objects.all()
         serializer=OrdenDeEnvioSerializer(ordenEnvio,many=True)
@@ -149,7 +151,7 @@ class ordenEnvioList(APIView):
     
 
 class ordenEnvioDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return OrdenEnvio.objects.get(pk=pk)
@@ -176,7 +178,7 @@ class ordenEnvioDetalle(APIView):
     
 
 class boletaList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         boleta=Boleta.objects.all()
         serializer=BoletaSerializer(boleta,many=True)
@@ -191,7 +193,7 @@ class boletaList(APIView):
     
 
 class boletaDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return Boleta.objects.get(pk=pk)
@@ -217,7 +219,7 @@ class boletaDetalle(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class detalleBoletaList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         boletaDetalle=DetalleBoleta.objects.all()
         serializer=DetalleBoletaSerializer(boletaDetalle,many=True)
@@ -232,7 +234,7 @@ class detalleBoletaList(APIView):
     
 
 class detalleBoletaDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return DetalleBoleta.objects.get(pk=pk)
@@ -259,7 +261,7 @@ class detalleBoletaDetalle(APIView):
     
 
 class movimientosStockList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         movimientoStock=MovimientoStock.objects.all()
         serializer=MovimientosStockSerializer(movimientoStock,many=True)
@@ -274,7 +276,7 @@ class movimientosStockList(APIView):
     
 
 class movimientoStockDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return MovimientoStock.objects.get(pk=pk)
@@ -300,7 +302,7 @@ class movimientoStockDetalle(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class configuracionStokList(APIView):
-
+    permission_classes = [IsBrandon]
     def get(self,request):
         confi=ConfiguracionStock.objects.all()
         serializer=ConfiguracionStockSerilizer(confi,many=True)
@@ -315,7 +317,7 @@ class configuracionStokList(APIView):
     
 
 class configuracionStockDetalle(APIView):
-    
+    permission_classes = [IsBrandon]
     def get_object(self,pk):
         try:
             return ConfiguracionStock.objects.get(pk=pk)
