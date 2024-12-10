@@ -22,6 +22,7 @@ class FormularioRegistro(UserCreationForm): #es un formulario de Django utilizad
 
 # Formulario para crear o editar productos
 class FormularioProducto(forms.ModelForm): #Django crea automáticamente loss campos del formulario en función de los campos definidos en un modelo específico.
+    id = forms.IntegerField(label="id")
     nombre = forms.CharField(label="Nombre del Producto")
     descripcion = forms.CharField(label="Descripción", widget=forms.Textarea) #campo de texto expandido.
     precio = forms.DecimalField(label="Precio", max_digits=10)
