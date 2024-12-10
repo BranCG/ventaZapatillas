@@ -56,7 +56,7 @@ def enviar_boleta_por_correo(request, boleta_id):
     text_content = strip_tags(html_content)  # Extraer texto plano para compatibilidad
 
     # Configurar el correo
-    subject=f"Boleta #{boleta.numero_boleta}"
+    subject=f"Boleta #{boleta.id}"
     body =text_content
     from_email='comercio@buscadoriaestudio.com'
     to= boleta.cliente.email
