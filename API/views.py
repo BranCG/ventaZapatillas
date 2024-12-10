@@ -64,8 +64,10 @@ class ProductoDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.G
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-class CarritoList(APIView):
+class CarritoList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = Carrito.objects.all()
+    serializer_class = CarritoSerializer
     def get(self,request):
         carrito=Carrito.objects.all()
         serializer=CarritoSerializer(carrito,many=True)
@@ -78,8 +80,10 @@ class CarritoList(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-class CarritoDetalle(APIView):
+class CarritoDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = Carrito.objects.all()
+    serializer_class = CarritoSerializer
     def get_object(self,pk):
         try:
             return Carrito.objects.get(pk=pk)
@@ -104,23 +108,28 @@ class CarritoDetalle(APIView):
         carrito.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class CarritoItemList(APIView):
+class CarritoItemList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+
     permission_classes = [IsBrandon]
+    queryset = CarritoItem.objects.all()
+    serializer_class = CarritoItemSerializer
     def get(self,request):
         carritoItem=CarritoItem.objects.all()
         serializer=CarritoItemSerializer(carritoItem,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=CarritoItemSerializer(data=request)
+        serializer=CarritoItemSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class CarritoItemDetalle(APIView):
+class CarritoItemDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = CarritoItem.objects.all()
+    serializer_class = CarritoItemSerializer
     def get_object(self,pk):
         try:
             return CarritoItem.objects.get(pk=pk)
@@ -146,23 +155,27 @@ class CarritoItemDetalle(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-class ordenEnvioList(APIView):
+class ordenEnvioList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = OrdenEnvio.objects.all()
+    serializer_class = OrdenDeEnvioSerializer
     def get(self,request):
         ordenEnvio=OrdenEnvio.objects.all()
         serializer=OrdenDeEnvioSerializer(ordenEnvio,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=OrdenDeEnvioSerializer(data=request)
+        serializer=OrdenDeEnvioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class ordenEnvioDetalle(APIView):
+class ordenEnvioDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = OrdenEnvio.objects.all()
+    serializer_class = OrdenDeEnvioSerializer
     def get_object(self,pk):
         try:
             return OrdenEnvio.objects.get(pk=pk)
@@ -188,23 +201,27 @@ class ordenEnvioDetalle(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-class boletaList(APIView):
+class boletaList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = Boleta.objects.all()
+    serializer_class = BoletaSerializer
     def get(self,request):
         boleta=Boleta.objects.all()
         serializer=BoletaSerializer(boleta,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=BoletaSerializer(data=request)
+        serializer=BoletaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class boletaDetalle(APIView):
+class boletaDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = Boleta.objects.all()
+    serializer_class = BoletaSerializer
     def get_object(self,pk):
         try:
             return Boleta.objects.get(pk=pk)
@@ -229,23 +246,27 @@ class boletaDetalle(APIView):
         boleta.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class detalleBoletaList(APIView):
+class detalleBoletaList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = DetalleBoleta.objects.all()
+    serializer_class = DetalleBoletaSerializer
     def get(self,request):
         boletaDetalle=DetalleBoleta.objects.all()
         serializer=DetalleBoletaSerializer(boletaDetalle,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=DetalleBoletaSerializer(data=request)
+        serializer=DetalleBoletaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class detalleBoletaDetalle(APIView):
+class detalleBoletaDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = DetalleBoleta.objects.all()
+    serializer_class = DetalleBoletaSerializer
     def get_object(self,pk):
         try:
             return DetalleBoleta.objects.get(pk=pk)
@@ -271,23 +292,27 @@ class detalleBoletaDetalle(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-class movimientosStockList(APIView):
+class movimientosStockList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = MovimientoStock.objects.all()
+    serializer_class = MovimientosStockSerializer
     def get(self,request):
         movimientoStock=MovimientoStock.objects.all()
         serializer=MovimientosStockSerializer(movimientoStock,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=MovimientosStockSerializer(data=request)
+        serializer=MovimientosStockSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class movimientoStockDetalle(APIView):
+class movimientoStockDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = MovimientoStock.objects.all()
+    serializer_class = MovimientosStockSerializer
     def get_object(self,pk):
         try:
             return MovimientoStock.objects.get(pk=pk)
@@ -312,23 +337,27 @@ class movimientoStockDetalle(APIView):
         movimientoStock.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class configuracionStokList(APIView):
+class configuracionStokList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = ConfiguracionStock.objects.all()
+    serializer_class = ConfiguracionStockSerilizer
     def get(self,request):
         confi=ConfiguracionStock.objects.all()
         serializer=ConfiguracionStockSerilizer(confi,many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=ConfiguracionStockSerilizer(data=request)
+        serializer=ConfiguracionStockSerilizer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-class configuracionStockDetalle(APIView):
+class configuracionStockDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = ConfiguracionStock.objects.all()
+    serializer_class = ConfiguracionStockSerilizer
     def get_object(self,pk):
         try:
             return ConfiguracionStock.objects.get(pk=pk)

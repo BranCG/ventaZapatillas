@@ -21,7 +21,7 @@ class Boleta(models.Model):
     numero_boleta = models.CharField(max_length=20, unique=True)
     fecha_emision = models.DateTimeField(auto_now_add=True)
     cliente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='boletas')
-    total = models.PositiveIntegerField(null=True, blank=True)  # Permite que 'total' sea nulo
+    total = models.PositiveIntegerField(null=True, blank=True)  
 
     def calcular_total(self):
         self.total = sum(detalle.subtotal for detalle in self.detalles.all())
