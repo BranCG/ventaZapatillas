@@ -7,6 +7,7 @@ from django.db.models import Sum
 
 
 class Producto(models.Model):
+    id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=500)
     precio = models.PositiveIntegerField()
@@ -14,7 +15,7 @@ class Producto(models.Model):
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
 
     def __str__(self):
-        return self.nombre
+        return str(self.id) + "" + self.nombre + self.descripcion + "$" + str(self.precio)
 
     def actualizar_stock(self):
         """Actualiza el stock basado en los movimientos"""

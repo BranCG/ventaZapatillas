@@ -183,7 +183,7 @@ def modificar_cuenta(request):
     return render(request, 'modificar_cuenta.html', {'user_form': user_form})
 
 
-# Vista para eliminar cuenta de usuario
+# Vista para eliminar cuenta de usuarioz
 @login_required
 def eliminar_cuenta(request):
     if request.method == "POST":

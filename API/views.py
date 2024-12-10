@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .serializers import *
 from .models import *
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics, mixins
 from rest_framework.views import APIView
 
 from .permissions import IsBrandon
@@ -14,23 +14,29 @@ def api_home(request):
     return HttpResponse("Bienvenido a la API")
 # Create your views here.
 
-class ProductoList(APIView):
+class ProductoList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
+
     def get(self,request):
         productos=Producto.objects.all()
         serializer=ProductoSerializer(productos,many=True)
         return Response(serializer.data)
 
-    def post(self,request):
-        serializer=ProductoSerializer(data=request)
+    def post(self, request):
+        serializer = ProductoSerializer(data=request.data) 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 
-class ProductoDetalle(APIView):
+class ProductoDetalle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     permission_classes = [IsBrandon]
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
     def get_object(self,pk):
         try:
             return Producto.objects.get(pk=pk)
@@ -64,7 +70,7 @@ class CarritoList(APIView):
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=CarritoSerializer(data=request)
+        serializer=CarritoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
